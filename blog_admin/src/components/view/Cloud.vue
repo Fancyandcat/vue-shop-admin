@@ -2,7 +2,12 @@
   <div class="cloud">
     <el-row class="tac">
       <nav-bar></nav-bar>
-      <menu-bar></menu-bar>
+      <menu-bar @changeMenuRight="changeMenuRight"></menu-bar>
+      <el-col :span="21" class="content-box">
+        <transition name="fade" mode="out-in" appear>
+          <router-view></router-view>
+        </transition>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -17,6 +22,11 @@ export default {
   deta () {
     return {
     }
+  },
+  methods: {
+    changeMenuRight (str) {
+      this.$router.push({name: 'bus', params: {name: str}})
+    }
   }
 }
 </script>
@@ -25,4 +35,12 @@ export default {
   height 100%
   .tac
     height 100%
+  .content-box
+    height 94%
+.fade-enter-active,
+.fade-leave-active
+  transition opacity .3s
+.fade-enter,
+.fade-leave-active
+  opacity 0
 </style>

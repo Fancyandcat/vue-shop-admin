@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bar" style="background-color: #1F262e">
+  <div class="nav-bar">
     <el-row type="flex" class="row-bg" justify="end" align="middle">
       <el-col :span="2">
         <el-dropdown trigger="click">
@@ -33,8 +33,11 @@ export default {
 @import '~common/stylus/baseColor.styl'
 .nav-bar
   height 6%
+  background:linear-gradient(to left,#292929,#acb5bc,#292929)
+  box-shadow 0 10px 15px #E4E7ED
   .row-bg
     height 100%
     .el-dropdown-link
       color $color-index-gray
+      cursor pointer
 </style>

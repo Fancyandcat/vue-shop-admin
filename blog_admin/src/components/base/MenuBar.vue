@@ -1,27 +1,28 @@
 <template>
-  <div class="menu-bar">
-    <el-col :span="3" style="height: 100%">
-      <el-menu
-        class="menu-vertical"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-submenu v-for="(menu, index) in menuList"
-        :index="menu.id" :key="index">
+  <el-col :span="3" class="menu-bar">
+    <el-menu
+      class="menu-vertical"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      :default-active="menuList[0].id">
+      <div v-for="(menu, index) in menuList" :key="index">
+        <el-submenu v-if="menu.child && menu.child.length > 0" :index="menu.id">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span>{{menu.name}}</span>
           </template>
-          <el-menu-item-group v-if="menu.child && menu.child.length > 0">
-            <template slot="title">分组一</template>
-            <el-menu-item v-for="(menuChild, index) in menu.child" :key="index" :index="menuChild.id">{{menuChild.name}}</el-menu-item>
+          <el-menu-item-group>
+            <el-menu-item v-for="(menuChild, index) in menu.child" :key="index" :index="menuChild.id" @click="handleMenu(menuChild.urlKey)"><i class="el-icon-location"></i>{{menuChild.name}}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-      </el-menu>
-    </el-col>
-  </div>
+        <el-menu-item v-else :index="menu.id" @click="handleMenu(menu.urlKey)">
+          <i class="el-icon-menu"></i>
+          <span slot="title">{{menu.name}}</span>
+        </el-menu-item>
+      </div>
+    </el-menu>
+  </el-col>
 </template>
 <script>
 import { menuList } from 'common/js/config'
@@ -32,11 +33,9 @@ export default {
     }
   },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+    handleMenu (str) {
+      console.log('handle', str)
+      str && this.$emit('changeMenuRight', str)
     }
   }
 }
@@ -46,4 +45,7 @@ export default {
   height 94%
   .menu-vertical
     height 100%
+.appear-class
+  transition all 10s ease
+  transform translateX(-100px)
 </style>

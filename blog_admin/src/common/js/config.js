@@ -1,4 +1,9 @@
-export let menuList = [{
+// 菜单列表
+export const menuList = [{
+  name: '主页',
+  urlKey: '主页',
+  id: '0'
+}, {
   name: '我的博客',
   id: '00',
   child: [{
@@ -6,6 +11,7 @@ export let menuList = [{
     id: '000'
   }, {
     name: '查看',
+    urlKey: '博客列表',
     id: '001'
   }]
 }, {
@@ -32,3 +38,9 @@ export let menuList = [{
   name: '我的留言板',
   id: '03'
 }]
+
+// 路由列表
+export const routeObj = {
+  '主页': 'index',
+  '博客列表': 'blog-list'
+}

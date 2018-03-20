@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from '@/components/view/Login'
 import Cloud from '@/components/view/Cloud'
 import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
@@ -17,7 +18,7 @@ let blog = [
 let routes = [
   {
     path: '/',
-    redirect: '/cloud/index'
+    redirect: '/login'
   },
   {
     path: '/cloud',
@@ -39,6 +40,11 @@ let routes = [
         component: Bus
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ]
 routes[2].children = routes[2].children.concat(

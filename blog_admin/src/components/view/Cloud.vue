@@ -14,17 +14,28 @@
 <script>
 import NavBar from '@/components/base/NavBar'
 import MenuBar from '@/components/base/MenuBar'
+import { throttle } from 'common/js/throttle'
 export default {
   components: {
     NavBar,
     MenuBar
   },
-  deta () {
+  data () {
     return {
+      searchThrottleConfig: {
+        timeFlag: true,
+        throttleTimer: null
+      }
     }
   },
   methods: {
     changeMenuRight (str) {
+      let that = this
+      return throttle(this.searchThrottleConfig, function () {
+        that.changeRouteToBus(str)
+      }, 600)
+    },
+    changeRouteToBus (str) {
       this.$router.push({name: 'bus', params: {name: str}})
     }
   }

@@ -7,15 +7,17 @@ import App from './App'
 import router from './router'
 import 'common/stylus/reset.styl'
 import AV from 'leancloud-storage'
+import BASEDATA from 'api/config'
+import { getDataPost, getDataGet } from 'api/getData'
 window.AV = AV
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-var APP_ID = 'IPqWSvhf3TreD8bipidSCJoz-gzGzoHsz'
-var APP_KEY = 's8eGizSK6wpJFWaV5SlDWo4G'
 AV.init({
-  appId: APP_ID,
-  appKey: APP_KEY
+  appId: BASEDATA.appInfo.appId,
+  appKey: BASEDATA.appInfo.appKey
 })
+Vue.prototype.$post = getDataPost
+Vue.prototype.$get = getDataGet
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

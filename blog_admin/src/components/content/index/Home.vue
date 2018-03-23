@@ -12,12 +12,31 @@ export default {
   },
   methods: {
     addData () {
-      var todo = window.AV.Object.createWithoutData('TestObject', '5ab0b77c75657116a39210f5')
-      todo.destroy().then(function (success) {
-        console.log('成功', success)
-      }, function (error) {
-        console.error(error)
-      })
+      // 测试一下能不能正常请求别的数据
+      let obj = {
+        where: {
+          objectId: '5ab3460d17d0096887686799'
+        },
+        limit: 1
+      }
+      console.log('canshu', this.setGetParamsToStr(obj))
+      let a = new window.AV.User()
+      console.log(a.current())
+      // this.$get('https://ipqwsvhf.api.lncld.net/1.1/classes/TestObject?' + this.setGetParamsToStr(obj)).then((res) => {
+      //   console.log(res)
+      // })
+    },
+    setGetParamsToStr (obj) {
+      let str = ''
+      let paramsObj = JSON.parse(JSON.stringify(obj))
+      for (let k in paramsObj) {
+        if (typeof paramsObj[k] === 'object') {
+          str = str + k + '=' + JSON.stringify(paramsObj[k]) + '&'
+        } else {
+          str = str + k + '=' + paramsObj[k] + '&'
+        }
+      }
+      return str.substring(0, str.length - 1)
     }
   }
 }

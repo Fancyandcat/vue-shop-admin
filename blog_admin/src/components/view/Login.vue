@@ -26,6 +26,7 @@
 <script>
 import { imgsUrl } from 'common/js/imgsUrl'
 import { resetObj } from 'common/js/common'
+import BASEDATA from 'api/config'
 export default {
   data () {
     return {
@@ -42,9 +43,12 @@ export default {
     }
   },
   created () {
-    this.imgUrl = imgsUrl[Math.floor(Math.random() * imgsUrl.length)]
+    this.setBgByRandom()
   },
   methods: {
+    setBgByRandom () {
+      this.imgUrl = imgsUrl[Math.floor(Math.random() * imgsUrl.length)]
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -60,7 +64,7 @@ export default {
     },
     // 登录方式
     loginByPwd () {
-      this.$post('https://ipqwsvhf.api.lncld.net/1.1/login', {
+      this.$post(BASEDATA.loginUrl, {
         username: this.loginForm.name,
         password: this.loginForm.pwd
       }).then(res => {
@@ -71,7 +75,9 @@ export default {
             message: '登录成功',
             type: 'success'
           })
-          this.$router.push({name: 'index'})
+          setTimeout(() => {
+            this.$router.push({name: 'index'})
+          }, 1000)
         }
       }).catch((res) => {
         this.$message({

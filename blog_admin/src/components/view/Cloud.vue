@@ -37,6 +37,14 @@ export default {
     },
     changeRouteToBus (str) {
       this.$router.push({name: 'bus', params: {name: str}})
+    },
+    isCurrentToken () {
+      return new window.AV.User()
+    }
+  },
+  watch: {
+    $route (to, from, next) {
+      console.log('router', to.name, from.name)
     }
   }
 }

@@ -15,6 +15,7 @@
 import NavBar from '@/components/base/NavBar'
 import MenuBar from '@/components/base/MenuBar'
 import { throttle } from 'common/js/throttle'
+import { ApiLoginStatic } from 'api/login'
 export default {
   components: {
     NavBar,
@@ -38,13 +39,13 @@ export default {
     changeRouteToBus (str) {
       this.$router.push({name: 'bus', params: {name: str}})
     },
-    isCurrentToken () {
-      return new window.AV.User()
+    changeRouteToLogin () {
+      this.$router.push({name: 'login'})
     }
   },
   watch: {
     $route (to, from, next) {
-      console.log('router', to.name, from.name)
+      !ApiLoginStatic() && this.changeRouteToLogin()
     }
   }
 }

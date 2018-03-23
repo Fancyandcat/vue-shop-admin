@@ -9,19 +9,12 @@ export default {
     return {}
   },
   created () {
+    console.log(window.AV.User.current())
   },
   methods: {
     addData () {
       // 测试一下能不能正常请求别的数据
-      let obj = {
-        where: {
-          objectId: '5ab3460d17d0096887686799'
-        },
-        limit: 1
-      }
-      console.log('canshu', this.setGetParamsToStr(obj))
-      let a = new window.AV.User()
-      console.log(a.current())
+      window.AV.User.logOut()
       // this.$get('https://ipqwsvhf.api.lncld.net/1.1/classes/TestObject?' + this.setGetParamsToStr(obj)).then((res) => {
       //   console.log(res)
       // })

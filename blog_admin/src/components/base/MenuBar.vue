@@ -5,7 +5,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      :default-active="menuList[0].id">
+      :default-active="currentMenu">
       <div v-for="(menu, index) in menuList" :key="index">
         <el-submenu v-if="menu.child && menu.child.length > 0" :index="menu.id">
           <template slot="title">
@@ -29,13 +29,20 @@ import { menuList } from 'common/js/config'
 export default {
   data () {
     return {
-      menuList: menuList
+      menuList: menuList,
+      currentMenu: 0
     }
+  },
+  created () {
+    this.initCurrentMenu()
   },
   methods: {
     handleMenu (str) {
       console.log('handle', str)
       str && this.$emit('changeMenuRight', str)
+    },
+    initCurrentMenu () {
+      this.currentMenu = 0
     }
   }
 }

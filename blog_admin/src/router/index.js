@@ -4,14 +4,14 @@ import Login from '@/components/view/Login'
 import Cloud from '@/components/view/Cloud'
 import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
-import BlogList from '@/components/content/blog/BlogList'
+import GoodsList from '@/components/content/goods/GoodsList'
 Vue.use(Router)
 
-let blog = [
+let goods = [
   {
-    path: 'blog',
-    name: 'blog-list',
-    component: BlogList
+    path: 'goods',
+    name: 'goods-list',
+    component: GoodsList
   }
 ]
 
@@ -48,7 +48,7 @@ let routes = [
   }
 ]
 routes[2].children = routes[2].children.concat(
-  blog
+  goods
 )
 
 export default new Router({

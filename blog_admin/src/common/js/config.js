@@ -4,43 +4,34 @@ export const menuList = [{
   urlKey: '主页',
   id: '0'
 }, {
-  name: '我的博客',
+  name: '商品管理',
   id: '00',
   child: [{
-    name: '增加',
+    name: '商品列表',
+    urlKey: '商品列表',
     id: '000'
   }, {
-    name: '查看',
-    urlKey: '博客列表',
+    name: '商品分类',
     id: '001'
   }]
 }, {
-  name: '我的列表',
+  name: '订单管理',
   id: '01',
   child: [{
-    name: '增加',
+    name: '订单列表',
     id: '010'
-  }, {
-    name: '查看',
-    id: '011'
   }]
 }, {
-  name: '我的生活',
+  name: '消息管理',
   id: '02',
   child: [{
-    name: '增加',
+    name: '暂未开启',
     id: '020'
-  }, {
-    name: '查看',
-    id: '021'
   }]
-}, {
-  name: '我的留言板',
-  id: '03'
 }]
 
 // 路由列表
 export const routeObj = {
   '主页': 'index',
-  '博客列表': 'blog-list'
+  '商品列表': 'goods-list'
 }

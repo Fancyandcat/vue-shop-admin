@@ -4,9 +4,11 @@
       <nav-bar></nav-bar>
       <menu-bar @changeMenuRight="changeMenuRight"></menu-bar>
       <el-col :span="21" class="content-box">
-        <transition name="fade" mode="out-in" appear>
-          <router-view></router-view>
-        </transition>
+        <div class="content-wrapper">
+          <transition name="fade" mode="out-in" appear>
+            <router-view></router-view>
+          </transition>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -57,6 +59,16 @@ export default {
     height 100%
   .content-box
     height 94%
+    padding 30px 10px
+    .content-wrapper
+      height 100%
+      width 100%
+      border 1px solid #eef4f8
+      box-shadow 0 0 15px #b8becc
+      position relative
+      border-radius: 5px
+      padding 20px
+      overflow auto
 .fade-enter-active,
 .fade-leave-active
   transition opacity .3s

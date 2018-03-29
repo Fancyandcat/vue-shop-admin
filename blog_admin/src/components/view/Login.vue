@@ -2,6 +2,7 @@
   <div class="login">
     <img :src="imgUrl" class="bg-img">
     <el-dialog
+    title="商城管理系统后台"
     :visible.sync="outerVisible"
     :close-on-press-escape="false"
     :show-close="false"
@@ -12,7 +13,7 @@
           <el-input v-model="loginForm.name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pwd">
-          <el-input v-model="loginForm.pwd" type="password" @keyup.enter="submitForm('loginForm')"></el-input>
+          <el-input v-model="loginForm.pwd" type="password" @keyup.enter.native="submitForm('loginForm')"></el-input>
         </el-form-item>
         <el-form-item class="t-c">
           <el-button type="primary" @click="submitForm('loginForm')">登 录</el-button>
@@ -24,7 +25,7 @@
 </template>
 <script>
 import { imgsUrl } from 'common/js/imgsUrl'
-import { ApiLoginIn } from 'api/login'
+import { ApiLoginIn, ApiLoginStatic } from 'api/login'
 export default {
   data () {
     return {
@@ -42,6 +43,7 @@ export default {
   },
   created () {
     this.setBgByRandom()
+    this.loginByAuto()
   },
   methods: {
     setBgByRandom () {
@@ -66,7 +68,8 @@ export default {
       ApiLoginIn(this.loginForm.name, this.loginForm.pwd).then(function () {
         that.$message({
           message: '登录成功',
-          type: 'success'
+          type: 'success',
+          duration: 1500
         })
         setTimeout(() => {
           that.$router.push({name: 'index'})
@@ -78,6 +81,9 @@ export default {
         })
         that.resetForm('loginForm')
       })
+    },
+    loginByAuto () {
+      ApiLoginStatic() && this.$router.push({name: 'index'})
     }
   }
 }

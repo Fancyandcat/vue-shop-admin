@@ -5,6 +5,7 @@ import Cloud from '@/components/view/Cloud'
 import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
 import GoodsList from '@/components/content/goods/GoodsList'
+import GoodsAdd from '@/components/content/goods/GoodsAdd'
 Vue.use(Router)
 
 let goods = [
@@ -12,6 +13,11 @@ let goods = [
     path: 'goods',
     name: 'goods-list',
     component: GoodsList
+  },
+  {
+    path: 'goods/add',
+    name: 'goods-add',
+    component: GoodsAdd
   }
 ]
 

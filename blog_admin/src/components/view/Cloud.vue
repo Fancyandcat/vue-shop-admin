@@ -18,6 +18,7 @@ import NavBar from '@/components/base/NavBar'
 import MenuBar from '@/components/base/MenuBar'
 import { throttle } from 'common/js/throttle'
 import { ApiLoginStatic } from 'api/login'
+
 export default {
   components: {
     NavBar,
@@ -69,6 +70,19 @@ export default {
       border-radius: 5px
       padding 20px
       overflow auto
+      &::-webkit-scrollbar
+        width: 10px
+        height: 5px
+        -webkit-border-radius: 4px
+      &::-webkit-scrollbar-thumb
+        background-color: #ccc
+        -webkit-border-radius: 4px
+      &::-webkit-scrollbar-thumb:hover
+        background-color: #ccc
+        -webkit-border-radius: 4px
+      &::-webkit-scrollbar-track-piece
+        height: 20px
+        -webkit-border-radius: 4px
 .fade-enter-active,
 .fade-leave-active
   transition opacity .3s

@@ -7,10 +7,16 @@
       </el-row>
     </div>
     <div class="content">
-      <el-table :data="tableData" :border=true :highlight-current-row=true>
-        <el-table-column :resizable=false prop="avatar" align="center" label="缩略图" />
+      <el-table :data="tableData" :border=true
+      :highlight-current-row=true v-loading="loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-table-column :resizable=false align="center" label="缩略图">
+          <template slot-scope="scope">
+            <img :src="scope.row.avatar" width="100px">
+          </template>
+        </el-table-column>
         <el-table-column :resizable=false prop="title" align="center" label="名称" />
-        <el-table-column :resizable=false prop="price" align="center" label="价格" />
+        <el-table-column :resizable=false prop="price" align="center" sortable label="价格" />
         <el-table-column :resizable=false prop="roleconst" align="center" label="操作">
           <template slot-scope="scope">
             <el-button size="small">修改</el-button>
@@ -28,6 +34,7 @@ export default {
   data () {
     return {
       tableData: [],
+      loading: true,
       pageMsg: {
         total: 1,
         pageNum: 1,
@@ -36,21 +43,23 @@ export default {
     }
   },
   created () {
-    this.initPage()
+    this.getPage()
     this.getList()
   },
   methods: {
-    initPage () {
+    getPage () {
       ApiGoodsCountPage().then(res => {
         this.pageMsg.total = res.length
       })
     },
     getList () {
+      this.loading = true
       ApiGoodsList(this.pageMsg).then(res => {
         if (Array.isArray(res)) {
           this.tableData = res.map(item => {
             return item.attributes
           })
+          this.loading = false
         } else {
           console.error('goodslist', res)
         }

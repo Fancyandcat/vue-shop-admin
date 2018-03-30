@@ -7,6 +7,7 @@ import App from './App'
 import router from './router'
 import 'common/stylus/reset.styl'
 import AV from 'leancloud-storage'
+import store from './store'
 import BASEDATA from 'api/config'
 import { getDataPost, getDataGet } from 'api/getData'
 window.AV = AV
@@ -22,6 +23,7 @@ Vue.prototype.$get = getDataGet
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

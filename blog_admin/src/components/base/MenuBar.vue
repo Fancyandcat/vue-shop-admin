@@ -13,10 +13,10 @@
             <span>{{menu.name}}</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item v-for="(menuChild, index) in menu.child" :key="index" :index="menuChild.id" @click="handleMenu(menuChild.urlKey)"><i class="el-icon-location"></i>{{menuChild.name}}</el-menu-item>
+            <el-menu-item v-for="(menuChild, index) in menu.child" :key="index" :index="menuChild.id" @click="handleMenu(menuChild.urlKey, menuChild.id)"><i class="el-icon-location"></i>{{menuChild.name}}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item v-else :index="menu.id" @click="handleMenu(menu.urlKey)">
+        <el-menu-item v-else :index="menu.id" @click="handleMenu(menu.urlKey, menu.id)">
           <i class="el-icon-menu"></i>
           <span slot="title">{{menu.name}}</span>
         </el-menu-item>
@@ -26,6 +26,7 @@
 </template>
 <script>
 import { menuList } from 'common/js/config'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -37,13 +38,22 @@ export default {
     this.initCurrentMenu()
   },
   methods: {
-    handleMenu (str) {
-      console.log('handle', str)
+    handleMenu (str, id) {
+      console.log('handle', str, id)
+      this.setCurrentMenu(id)
       str && this.$emit('changeMenuRight', str)
     },
     initCurrentMenu () {
-      this.currentMenu = 0
-    }
+      this.currentMenu = this.vxCurrentMenu || menuList[0].id
+    },
+    ...mapMutations({
+      'setCurrentMenu': 'SET_CURRENT_MENU'
+    })
+  },
+  computed: {
+    ...mapGetters([
+      'vxCurrentMenu'
+    ])
   }
 }
 </script>

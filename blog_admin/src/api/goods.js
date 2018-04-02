@@ -13,22 +13,31 @@ export function ApiGoodsList (pageMsg) {
   return query.find()
 }
 
-// 获取商品顶级分类
-export async function ApiGoodsCategory () {
+// 为获取顶级分类提供服务，请勿在外部调用 src:https://segmentfault.com/a/1190000007535316
+function __ApiGetGoodsC () {
   let query = new window.AV.Query('Category')
-  let categoris = []
   query.equalTo('parent', null)
-  await query.find().then((c) => {
-    c.forEach((element, index) => {
-      categoris.push({})
-      let aquery = new window.AV.Query('Category')
-      aquery.equalTo('parent', element)
-      aquery.find().then((s) => {
-        categoris[index][element.attributes.title] = s.map(item => {
-          return item.attributes
-        })
-      })
+  return query.find().then(res => {
+    return res
+  })
+}
+function __ApiGetGoodsSubByC (c) {
+  let aquery = new window.AV.Query('Category')
+  aquery.equalTo('parent', c)
+  return aquery.find().then(res => {
+    return res.map(result => {
+      return result.attributes
     })
   })
+}
+// 获取商品顶级分类
+export async function ApiGoodsCategory () {
+  let categoris = []
+  let s = await __ApiGetGoodsC()
+  for (let i = 0; i < s.length; i++) {
+    categoris.push({})
+    categoris[i].title = s[i].attributes.title
+    categoris[i].children = await __ApiGetGoodsSubByC(s[i])
+  }
   return categoris
 }

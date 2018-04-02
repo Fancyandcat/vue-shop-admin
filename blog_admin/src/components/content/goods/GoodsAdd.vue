@@ -13,14 +13,14 @@
         <el-form-item label="商品分类">
           <el-select v-model="form.category" placeholder="请选择">
             <el-option-group
-              v-for="group in options3"
-              :key="group.label"
-              :label="group.label">
+              v-for="group in categoryData"
+              :key="group.title"
+              :label="group.title">
               <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in group.children"
+                :key="item.title"
+                :label="item.title"
+                :value="item.objectId">
               </el-option>
             </el-option-group>
           </el-select>
@@ -54,6 +54,7 @@ export default {
         isHot: false,
         category: ''
       },
+      categoryData: [],
       options3: [{
         label: '热门城市',
         options: [{
@@ -86,9 +87,7 @@ export default {
   },
   methods: {
     getGoodsCategory () {
-      ApiGoodsCategory().then(res => {
-        console.log(res)
-      })
+      this.categoryData = ApiGoodsCategory()
     }
   }
 }

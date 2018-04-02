@@ -6,7 +6,7 @@
       <el-col :span="21" class="content-box">
         <div class="content-wrapper">
           <transition name="fade" mode="out-in" appear>
-            <router-view></router-view>
+            <router-view @changeContent="changeRouteToBus"></router-view>
           </transition>
         </div>
       </el-col>

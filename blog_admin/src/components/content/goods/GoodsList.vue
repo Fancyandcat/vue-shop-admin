@@ -2,8 +2,8 @@
   <div class="goods-list">
     <div class="title">
       <el-row :gutter="20">
-        <el-col :span="3"><h2>商品列表</h2></el-col>
-        <el-col :span="3" :offset="18"><div><el-button type="success" round size="medium" @click="goGoodsAdd">添加商品</el-button></div></el-col>
+        <el-col :span="2"><div>商品列表</div></el-col>
+        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsAdd">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -85,7 +85,8 @@ export default {
       this.getList()
     },
     goGoodsAdd () {
-      this.$router.push({name: 'goods-add'})
+      this.$emit('changeContent', '添加商品')
+      // this.$router.push({name: 'goods-add'})
     },
     getMatterCreatedDate (row, column) {
       let date = new Date(row.createdAt)

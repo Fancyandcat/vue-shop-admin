@@ -30,8 +30,26 @@ export const menuList = [{
   }]
 }]
 
+function __menuList (menuList) {
+  let list = {}
+  for (let index = 0; index < menuList.length; index++) {
+    const element = menuList[index]
+    list[element.name] = element.id
+    if (element.child) {
+      for (let _index = 0; _index < element.child.length; _index++) {
+        const _element = element.child[_index]
+        list[_element.name] = _element.id
+      }
+    }
+  }
+  return list
+}
+
+export const str2menuIdObj = __menuList(menuList)
+
 // 路由列表
 export const routeObj = {
   '主页': 'index',
-  '商品列表': 'goods-list'
+  '商品列表': 'goods-list',
+  '添加商品': 'goods-add'
 }

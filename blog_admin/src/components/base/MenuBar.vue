@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     handleMenu (str, id) {
-      console.log('handle', str, id)
+      this.currentMenu = id
       this.setCurrentMenu(id)
       str && this.$emit('changeMenuRight', str)
     },

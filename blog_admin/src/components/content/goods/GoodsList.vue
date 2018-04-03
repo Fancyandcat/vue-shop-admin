@@ -85,8 +85,8 @@ export default {
       this.getList()
     },
     goGoodsAdd () {
-      this.$emit('changeContent', '添加商品')
-      // this.$router.push({name: 'goods-add'})
+      // this.$emit('changeContent', '添加商品')
+      this.$router.push({name: 'goods-add'})
     },
     getMatterCreatedDate (row, column) {
       let date = new Date(row.createdAt)

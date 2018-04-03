@@ -4,6 +4,11 @@
       <nav-bar></nav-bar>
       <menu-bar @changeMenuRight="changeMenuRight"></menu-bar>
       <el-col :span="21" class="content-box">
+        <div class="content-crumb">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index">{{title}}</el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
         <div class="content-wrapper">
           <transition name="fade" mode="out-in" appear>
             <router-view @changeContent="changeRouteToBus"></router-view>
@@ -29,7 +34,8 @@ export default {
       searchThrottleConfig: {
         timeFlag: true,
         throttleTimer: null
-      }
+      },
+      titleArr: ['主页']
     }
   },
   methods: {
@@ -37,7 +43,7 @@ export default {
       let that = this
       return throttle(this.searchThrottleConfig, function () {
         that.changeRouteToBus(str)
-      }, 600)
+      }, 500)
     },
     changeRouteToBus (str) {
       this.$router.push({name: 'bus', params: {name: str}})
@@ -60,7 +66,9 @@ export default {
     height 100%
   .content-box
     height 94%
-    padding 30px 10px
+    padding 10px 10px 50px 10px
+    .content-crumb
+      margin-bottom 10px
     .content-wrapper
       height 100%
       width 100%

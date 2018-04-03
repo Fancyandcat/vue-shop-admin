@@ -42,6 +42,7 @@ export default {
     }
   },
   created () {
+    this.clearVuexInStorage()
     this.setBgByRandom()
     this.loginByAuto()
   },
@@ -61,6 +62,9 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    clearVuexInStorage () {
+      window.sessionStorage.removeItem('vuex')
     },
     // 登录方式
     loginByPwd () {

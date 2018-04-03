@@ -13,7 +13,7 @@ export default {
     let str = this.$route.params.name
     console.log('name', str, routeObj[str])
     let str2route = routeObj[str]
-    str && str2route && this.$router.push({name: str2route})
+    str && str2route && this.$router.replace({name: str2route})
   }
 }
 </script>

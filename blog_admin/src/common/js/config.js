@@ -53,3 +53,14 @@ export const routeObj = {
   '商品列表': 'goods-list',
   '添加商品': 'goods-add'
 }
+
+// 路由名字，用于面包屑
+export const routeName = {
+  'index': {
+    name: '主页'
+  },
+  'goods': {
+    name: '商品列表',
+    add: '新增商品'
+  }
+}

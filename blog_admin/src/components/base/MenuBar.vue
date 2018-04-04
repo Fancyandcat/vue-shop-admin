@@ -5,7 +5,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      :default-active="currentMenu">
+      :default-active="vxCurrentMenu">
       <div v-for="(menu, index) in menuList" :key="index">
         <el-submenu v-if="menu.child && menu.child.length > 0" :index="menu.id">
           <template slot="title">
@@ -30,8 +30,7 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      menuList: menuList,
-      currentMenu: 0
+      menuList: menuList
     }
   },
   created () {
@@ -39,12 +38,11 @@ export default {
   },
   methods: {
     handleMenu (str, id) {
-      this.currentMenu = id
       this.setCurrentMenu(id)
       str && this.$emit('changeMenuRight', str)
     },
     initCurrentMenu () {
-      this.currentMenu = this.vxCurrentMenu || menuList[0].id
+      this.setCurrentMenu(this.vxCurrentMenu || menuList[0].id)
     },
     ...mapMutations({
       'setCurrentMenu': 'SET_CURRENT_MENU'

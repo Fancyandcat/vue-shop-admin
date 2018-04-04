@@ -6,7 +6,7 @@
       <el-col :span="21" class="content-box">
         <div class="content-crumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index">{{title}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index"><span @click="changeRouteByCrumb(title)">{{title}}</span></el-breadcrumb-item>
           </el-breadcrumb>
         </div>
         <div class="content-wrapper">
@@ -23,7 +23,8 @@ import NavBar from '@/components/base/NavBar'
 import MenuBar from '@/components/base/MenuBar'
 import { throttle } from 'common/js/throttle'
 import { ApiLoginStatic } from 'api/login'
-
+import { routeName, routeObj, str2menuIdObj } from 'common/js/config'
+import { mapMutations } from 'vuex'
 export default {
   components: {
     NavBar,
@@ -35,8 +36,11 @@ export default {
         timeFlag: true,
         throttleTimer: null
       },
-      titleArr: ['主页']
+      titleArr: []
     }
+  },
+  created () {
+    this.changeCrumbByRoute()
   },
   methods: {
     changeMenuRight (str) {
@@ -50,11 +54,33 @@ export default {
     },
     changeRouteToLogin () {
       this.$router.push({name: 'login'})
-    }
+    },
+    changeCrumbByRoute () {
+      if (this.$route.name === 'bus' || this.$route.name === 'index') {
+        return (this.titleArr = [])
+      }
+      let routeNameArr = this.$route.name.split('-')
+      let titleArrTemp = ['主页']
+      routeName[routeNameArr[0]].name && titleArrTemp.push(routeName[routeNameArr[0]].name)
+      routeName[routeNameArr[0]][routeNameArr[1]] && titleArrTemp.push(routeName[routeNameArr[0]][routeNameArr[1]])
+      this.titleArr = titleArrTemp
+    },
+    changeRouteByCrumb (title) {
+      this.setCurrentMenu(str2menuIdObj[title])
+      this.$router.push({name: routeObj[title]})
+    },
+    ...mapMutations({
+      'setCurrentMenu': 'SET_CURRENT_MENU'
+    })
   },
   watch: {
     $route (to, from, next) {
       !ApiLoginStatic() && this.changeRouteToLogin()
+      // if (from.name.split('-')[0] !== 'bus' && to.name.split('-')[0] !== 'bus') {
+      //   // from.name.split('-')[0] !== to.name.split('-')[0]
+      //   from.name.split('-')[0] !== to.name.split('-')[0] && this.setCurrentMenu(to.name)
+      // }
+      this.changeCrumbByRoute()
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="3" class="menu-bar">
+  <el-col :span="4" class="menu-bar">
     <el-menu
       class="menu-vertical"
       background-color="#545c64"

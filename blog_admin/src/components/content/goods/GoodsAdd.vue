@@ -2,15 +2,15 @@
   <div class="goods-add">
     <div class="title">
       <el-row :gutter="20">
-        <el-col :span="3"><h2>添加商品</h2></el-col>
+        <el-col :span="3"><h2>添加商品{{form.category}}</h2></el-col>
       </el-row>
     </div>
     <div class="content">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="商品名称">
+      <el-form ref="addForm" :model="form" label-width="80px" :rules="rules" >
+        <el-form-item label="商品名称" prop="name">
           <el-input v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="商品分类">
+        <el-form-item label="商品分类" prop="category">
           <el-select v-model="form.category" placeholder="请选择">
             <el-option-group
               v-for="group in categoryData"
@@ -18,14 +18,14 @@
               :label="group.title">
               <el-option
                 v-for="item in group.children"
-                :key="item.title"
+                :key="item.objectId"
                 :label="item.title"
                 :value="item.objectId">
               </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品价格">
+        <el-form-item label="商品价格" prop="price">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
         <el-form-item label="是否新品">
@@ -35,8 +35,8 @@
           <el-switch v-model="form.isHot"></el-switch>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="submitForm('addForm')">立即创建</el-button>
+          <el-button @click="resetForm('addForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -55,31 +55,11 @@ export default {
         category: ''
       },
       categoryData: [],
-      options3: [{
-        label: '热门城市',
-        options: [{
-          value: 'Shanghai',
-          label: '上海'
-        }, {
-          value: 'Beijing',
-          label: '北京'
-        }]
-      }, {
-        label: '城市名',
-        options: [{
-          value: 'Chengdu',
-          label: '成都'
-        }, {
-          value: 'Shenzhen',
-          label: '深圳'
-        }, {
-          value: 'Guangzhou',
-          label: '广州'
-        }, {
-          value: 'Dalian',
-          label: '大连'
-        }]
-      }]
+      rules: {
+        name: [{required: true, message: '请输入商品名', trigger: 'blur'}],
+        category: [{required: true, message: '请定义商品类型', trigger: 'blur'}],
+        price: [{required: true, message: '请输入商品价格', trigger: 'blur', type: 'number'}]
+      }
     }
   },
   created () {
@@ -87,7 +67,23 @@ export default {
   },
   methods: {
     getGoodsCategory () {
-      this.categoryData = ApiGoodsCategory()
+      ApiGoodsCategory().then(res => {
+        this.categoryData = res
+        console.log(this.categoryData)
+      })
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }

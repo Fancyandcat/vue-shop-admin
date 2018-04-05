@@ -3,7 +3,7 @@
     <el-row class="tac">
       <nav-bar></nav-bar>
       <menu-bar @changeMenuRight="changeMenuRight"></menu-bar>
-      <el-col :span="21" class="content-box">
+      <el-col :span="20" class="content-box">
         <div class="content-crumb">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index"><span @click="changeRouteByCrumb(title)">{{title}}</span></el-breadcrumb-item>

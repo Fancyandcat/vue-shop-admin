@@ -26,6 +26,7 @@
 <script>
 import { imgsUrl } from 'common/js/imgsUrl'
 import { ApiLoginIn, ApiLoginStatic } from 'api/login'
+// 今天在钟怡家，开心~~~
 export default {
   data () {
     return {

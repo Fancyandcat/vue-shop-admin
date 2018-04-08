@@ -55,6 +55,7 @@ export default {
     changeRouteToLogin () {
       this.$router.push({name: 'login'})
     },
+    // 面包屑相关操作开始
     changeCrumbByRoute () {
       if (this.$route.name === 'bus' || this.$route.name === 'index') {
         return (this.titleArr = [])
@@ -69,6 +70,7 @@ export default {
       this.setCurrentMenu(str2menuIdObj[title])
       this.$router.push({name: routeObj[title]})
     },
+    // 面包屑相关操作结束
     ...mapMutations({
       'setCurrentMenu': 'SET_CURRENT_MENU'
     })

@@ -26,7 +26,7 @@ function __ApiGetGoodsSubByC (c) {
   aquery.equalTo('parent', c)
   return aquery.find().then(res => {
     return res.map(result => {
-      return result.attributes
+      return Object.assign({}, result.attributes, {objectId: result.id})
     })
   })
 }

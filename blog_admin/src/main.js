@@ -9,7 +9,10 @@ import 'common/stylus/reset.styl'
 import AV from 'leancloud-storage'
 import store from './store'
 import BASEDATA from 'api/config'
+import qiniu from 'qiniu-js'
+
 import { getDataPost, getDataGet } from 'api/getData'
+window.qiniu = qiniu
 window.AV = AV
 Vue.use(ElementUI)
 Vue.config.productionTip = false

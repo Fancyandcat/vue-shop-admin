@@ -35,7 +35,21 @@
           <el-switch v-model="form.isHot"></el-switch>
         </el-form-item>
         <el-form-item label="产品图">
-          <input type="file">
+          <el-upload
+            class="upload-file"
+            ref="upload"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            :on-change="handleChange"
+            :http-request="handleUpload"
+            list-type="picture"
+            :auto-upload="false">
+            <el-button size="small" type="primary">点击上传</el-button>
+             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('addForm')">立即创建</el-button>
@@ -63,12 +77,12 @@ export default {
         category: [{required: true, message: '请定义商品类型', trigger: 'blur'}],
         price: [{required: true, message: '请输入商品价格', trigger: 'blur', type: 'number'}]
       },
-      imageUrl: ''
+      fileList: [],
+      temp: ''
     }
   },
   created () {
     this.getGoodsCategory()
-    this.ceshi()
   },
   methods: {
     getGoodsCategory () {
@@ -77,13 +91,30 @@ export default {
         console.log(this.categoryData)
       })
     },
-    ceshi () {
-      // http://fancyandcat.leanapp.cn/upload/avatar
-      this.$post('http://fancyandcat.leanapp.cn/uploadImg/getToken').then((res) => {
-        console.log('token', res)
+    // 关于上传图片的操作
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
+    handleUpload () {
+      console.log(this.fileList)
+      console.log('取消了默认上传函数')
+      var file = new window.AV.File('ceshi', this.temp)
+      file.save().then(function (file) {
+        console.log(file.url())
+      }, function (error) {
+        console.error(error)
       })
     },
-    // 关于上传图片的操作
+    handleChange (file, fileList) {
+      console.log(file, fileList)
+      this.temp = file
+    },
+    submitUpload () {
+      this.$refs.upload.submit()
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

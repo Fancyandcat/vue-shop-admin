@@ -35,19 +35,29 @@
           <el-switch v-model="form.isHot"></el-switch>
         </el-form-item>
         <el-form-item label="产品图">
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="handleProSubmit">上传到服务器</el-button>
           <el-upload
-            class="upload"
-            ref="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :http-request="handleUpload"
-            :file-list="fileList"
-            :on-change="handleChange"
+            :http-request="handleAsyncUpload"
+            :on-change="handleProChange"
+            list-type="picture-card"
+            :limit="5"
+            multiple
             :auto-upload="false">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="描述图">
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="handleDesSubmit">上传到服务器</el-button>
+          <el-upload
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :http-request="handleAsyncUpload"
+            :on-change="handleDesChange"
+            list-type="picture-card"
+            :limit="5"
+            multiple
+            :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           </el-upload>
         </el-form-item>
         <el-form-item>
@@ -59,7 +69,8 @@
   </div>
 </template>
 <script>
-import { ApiGoodsCategory } from 'api/goods'
+// project 产品 description 描述
+import { ApiGoodsCategory, ApiGoodsProUpload } from 'api/goods'
 export default {
   data () {
     return {
@@ -68,7 +79,9 @@ export default {
         price: 0,
         isNew: false,
         isHot: false,
-        category: ''
+        category: '',
+        projectImgs: [],
+        descriptionImgs: []
       },
       categoryData: [],
       rules: {
@@ -76,8 +89,8 @@ export default {
         category: [{required: true, message: '请定义商品类型', trigger: 'blur'}],
         price: [{required: true, message: '请输入商品价格', trigger: 'blur', type: 'number'}]
       },
-      fileList: [],
-      temp: ''
+      tempProjectImgs: [],
+      tempDescriptionImgs: []
     }
   },
   created () {
@@ -87,33 +100,31 @@ export default {
     getGoodsCategory () {
       ApiGoodsCategory().then(res => {
         this.categoryData = res
-        console.log(this.categoryData)
       })
     },
     // 关于上传图片的操作
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
+    handleProChange (file, fileList) {
+      this.tempProjectImgs = fileList
     },
-    handlePreview (file) {
-      console.log(file)
+    handleProSubmit () {
+      this.handleAsyncUpload(this.tempProjectImgs, this.form.projectImgs)
     },
-    handleUpload () {
-      console.log('wenjian', this.temp)
-      console.log('取消了默认上传函数')
-      var file = new window.AV.File('ceshi', this.temp.raw)
-      file.save().then(function (file) {
-        console.log(file.url())
-      }, function (error) {
-        console.error(error)
-      })
+    handleDesChange (file, fileList) {
+      this.tempDescriptionImgs = fileList
     },
-    handleChange (file, fileList) {
-      console.log(file, fileList)
-      this.temp = file
+    handleDesSubmit () {
+      this.handleAsyncUpload(this.tempDescriptionImgs, this.form.descriptionImgs)
     },
-    submitUpload () {
-      this.$refs.upload.submit()
-      console.log('上传')
+    handleAsyncUpload (fileList, fileUrlArr) {
+      async function submitProjectImg (fileList) {
+        for (let i = 0; i < fileList.length; i++) {
+          let file = fileList[i]
+          await ApiGoodsProUpload(file.name, file.raw).then(res => {
+            fileUrlArr.push(res.url())
+          })
+        }
+      }
+      submitProjectImg(fileList)
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {

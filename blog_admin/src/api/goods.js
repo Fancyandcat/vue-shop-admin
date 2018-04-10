@@ -1,30 +1,30 @@
 // 获取商品列表页码
 export function ApiGoodsCountPage () {
-  let query = new window.AV.Query('Goods')
-  return query.find()
+  let _query = new window.AV.Query('Goods')
+  return _query.find()
 }
 
 // 获取商品列表
 export function ApiGoodsList (pageMsg) {
-  let query = new window.AV.Query('Goods')
-  query.include('category')
-  query.limit(pageMsg.pageSize)
-  query.skip(pageMsg.pageSize * (pageMsg.pageNum - 1))
-  return query.find()
+  let _query = new window.AV.Query('Goods')
+  _query.include('category')
+  _query.limit(pageMsg.pageSize)
+  _query.skip(pageMsg.pageSize * (pageMsg.pageNum - 1))
+  return _query.find()
 }
 
 // 为获取顶级分类提供服务，请勿在外部调用 src:https://segmentfault.com/a/1190000007535316
 function __ApiGetGoodsC () {
-  let query = new window.AV.Query('Category')
-  query.equalTo('parent', null)
-  return query.find().then(res => {
+  let _query = new window.AV.Query('Category')
+  _query.equalTo('parent', null)
+  return _query.find().then(res => {
     return res
   })
 }
 function __ApiGetGoodsSubByC (c) {
-  let aquery = new window.AV.Query('Category')
-  aquery.equalTo('parent', c)
-  return aquery.find().then(res => {
+  let _query = new window.AV.Query('Category')
+  _query.equalTo('parent', c)
+  return _query.find().then(res => {
     return res.map(result => {
       return Object.assign({}, result.attributes, {objectId: result.id})
     })
@@ -32,12 +32,20 @@ function __ApiGetGoodsSubByC (c) {
 }
 // 获取商品顶级分类
 export async function ApiGoodsCategory () {
-  let categoris = []
-  let s = await __ApiGetGoodsC()
-  for (let i = 0; i < s.length; i++) {
-    categoris.push({})
-    categoris[i].title = s[i].attributes.title
-    categoris[i].children = await __ApiGetGoodsSubByC(s[i])
+  let _categoris = []
+  let _s = await __ApiGetGoodsC()
+  for (let i = 0; i < _s.length; i++) {
+    _categoris.push({})
+    _categoris[i].title = _s[i].attributes.title
+    _categoris[i].children = await __ApiGetGoodsSubByC(_s[i])
   }
-  return categoris
+  return _categoris
+}
+// 上传产品图片
+/**
+ * params: name 文件名字 file 要上传的文件对象
+ */
+export function ApiGoodsProUpload (name, file) {
+  let _file = new window.AV.File(name, file)
+  return _file.save()
 }

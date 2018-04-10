@@ -9,11 +9,11 @@ import 'common/stylus/reset.styl'
 import AV from 'leancloud-storage'
 import store from './store'
 import BASEDATA from 'api/config'
-import qiniu from 'qiniu-js'
 
 import { getDataPost, getDataGet } from 'api/getData'
-window.qiniu = qiniu
+import Message from 'common/js/Message'
 window.AV = AV
+
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 AV.init({
@@ -23,10 +23,12 @@ AV.init({
 Vue.prototype.$post = getDataPost
 Vue.prototype.$get = getDataGet
 /* eslint-disable no-new */
-new Vue({
+let vue = new Vue({
   el: '#app',
   router,
   store,
   components: { App },
   template: '<App/>'
 })
+
+window.message = new Message({ source: vue })

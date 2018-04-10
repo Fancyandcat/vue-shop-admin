@@ -2,12 +2,12 @@
   <div class="goods-add">
     <div class="title">
       <el-row :gutter="20">
-        <el-col :span="3"><h2>添加商品{{form.category}}</h2></el-col>
+        <el-col :span="3"><h2>添加商品</h2></el-col>
       </el-row>
     </div>
     <div class="content">
       <el-form ref="addForm" :model="form" label-width="80px" :rules="rules" >
-        <el-form-item label="商品名称" prop="name">
+        <el-form-item label="商品名称" prop="title">
           <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="商品分类" prop="category">
@@ -26,7 +26,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="商品价格" prop="price">
-          <el-input v-model="form.price"></el-input>
+          <el-input v-model="form.price" type="number"></el-input>
         </el-form-item>
         <el-form-item label="是否新品">
           <el-switch v-model="form.isNew"></el-switch>
@@ -85,9 +85,9 @@ export default {
       },
       categoryData: [],
       rules: {
-        name: [{required: true, message: '请输入商品名', trigger: 'blur'}],
+        title: [{required: true, message: '请输入商品名', trigger: 'blur'}],
         category: [{required: true, message: '请定义商品类型', trigger: 'blur'}],
-        price: [{required: true, message: '请输入商品价格', trigger: 'blur', type: 'number'}]
+        price: [{required: true, message: '请输入商品价格', trigger: 'blur'}]
       },
       tempProjectImgs: [],
       tempDescriptionImgs: []
@@ -129,7 +129,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          console.log(this.form)
         } else {
           console.log('error submit!!')
           return false

@@ -36,18 +36,17 @@
         </el-form-item>
         <el-form-item label="产品图">
           <el-upload
-            class="upload-file"
+            class="upload"
             ref="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :http-request="handleUpload"
             :file-list="fileList"
             :on-change="handleChange"
-            :http-request="handleUpload"
-            list-type="picture"
             :auto-upload="false">
-            <el-button size="small" type="primary">点击上传</el-button>
-             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
@@ -99,9 +98,9 @@ export default {
       console.log(file)
     },
     handleUpload () {
-      console.log(this.fileList)
+      console.log('wenjian', this.temp)
       console.log('取消了默认上传函数')
-      var file = new window.AV.File('ceshi', this.temp)
+      var file = new window.AV.File('ceshi', this.temp.raw)
       file.save().then(function (file) {
         console.log(file.url())
       }, function (error) {
@@ -114,6 +113,7 @@ export default {
     },
     submitUpload () {
       this.$refs.upload.submit()
+      console.log('上传')
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {

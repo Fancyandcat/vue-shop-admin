@@ -42,7 +42,7 @@ export default {
       str && this.$emit('changeMenuRight', str)
     },
     initCurrentMenu () {
-      this.setCurrentMenu(this.vxCurrentMenu || menuList[0].id)
+      this.setCurrentMenu(menuList[0].id)
     },
     ...mapMutations({
       'setCurrentMenu': 'SET_CURRENT_MENU'

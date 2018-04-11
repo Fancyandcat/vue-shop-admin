@@ -24,8 +24,8 @@
             <el-tag type="danger" v-if="scope.row.isHot">热卖</el-tag>
           </template>
         </el-table-column>
-        <el-table-column :resizable=false prop="createdAt" align="center" sortable label="创建时间" :formatter="getMatterCreatedDate"/>
-        <el-table-column :resizable=false prop="updatedAt" align="center" sortable label="更新时间" :formatter="getMatterUpdatedAtDate"/>
+        <el-table-column :resizable=false prop="createdAt" align="center" label="创建时间" :formatter="getMatterCreatedDate"/>
+        <el-table-column :resizable=false prop="updatedAt" align="center" label="更新时间" :formatter="getMatterUpdatedAtDate"/>
         <el-table-column :resizable=false prop="roleconst" align="center" label="操作">
           <template slot-scope="scope">
             <el-button size="small">修改</el-button>

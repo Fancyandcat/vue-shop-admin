@@ -8,6 +8,7 @@ export function ApiGoodsCountPage () {
 export function ApiGoodsList (pageMsg) {
   let _query = new window.AV.Query('Goods')
   _query.include('category')
+  _query.descending('createdAt')
   _query.limit(pageMsg.pageSize)
   _query.skip(pageMsg.pageSize * (pageMsg.pageNum - 1))
   return _query.find()
@@ -48,4 +49,21 @@ export async function ApiGoodsCategory () {
 export function ApiGoodsProUpload (name, file) {
   let _file = new window.AV.File(name, file)
   return _file.save()
+}
+// 新增商品
+export function ApiGoodsAdd (params) {
+  if (!params || typeof params !== 'object') {
+    return
+  }
+  let _good = window.AV.Object.createWithoutData('Goods')
+  let _category = window.AV.Object.createWithoutData('Category', params.category)
+  for (let k in params) {
+    if (k === 'category') {
+      _good.set(k, _category)
+    } else {
+      _good.set(k, params[k])
+    }
+  }
+  console.log(_good)
+  return _good.save()
 }

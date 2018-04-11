@@ -77,12 +77,15 @@ export default {
   },
   watch: {
     $route (to, from, next) {
-      !ApiLoginStatic() && this.changeRouteToLogin()
+      if (!ApiLoginStatic()) {
+        this.changeRouteToLogin()
+      } else {
+        this.changeCrumbByRoute()
+      }
       // if (from.name.split('-')[0] !== 'bus' && to.name.split('-')[0] !== 'bus') {
       //   // from.name.split('-')[0] !== to.name.split('-')[0]
       //   from.name.split('-')[0] !== to.name.split('-')[0] && this.setCurrentMenu(to.name)
       // }
-      this.changeCrumbByRoute()
     }
   }
 }

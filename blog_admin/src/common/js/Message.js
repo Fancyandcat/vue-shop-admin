@@ -12,4 +12,10 @@ export default class Message {
       message: info
     })
   }
+  successMessage (info) {
+    this.that.$message({
+      type: 'success',
+      message: info
+    })
+  }
 }

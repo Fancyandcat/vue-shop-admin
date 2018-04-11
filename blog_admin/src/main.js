@@ -31,4 +31,4 @@ let vue = new Vue({
   template: '<App/>'
 })
 
-window.message = new Message({ source: vue })
+window.Message = new Message({ source: vue })

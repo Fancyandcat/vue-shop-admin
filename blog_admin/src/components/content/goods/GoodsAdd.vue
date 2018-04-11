@@ -34,9 +34,10 @@
         <el-form-item label="是否热卖">
           <el-switch v-model="form.isHot"></el-switch>
         </el-form-item>
-        <el-form-item label="产品图">
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="handleProSubmit">上传到服务器</el-button>
+        <el-form-item label="产品图" prop="images">
+          <el-button style="margin: 10px;" size="small" type="success" @click="handleProSubmit">上传到服务器</el-button>
           <el-upload
+            ref="projectImgs"
             action="https://jsonplaceholder.typicode.com/posts/"
             :http-request="handleAsyncUpload"
             :on-change="handleProChange"
@@ -47,9 +48,10 @@
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item label="描述图">
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="handleDesSubmit">上传到服务器</el-button>
+        <el-form-item label="描述图" prop="detail">
+          <el-button style="margin: 10px;" size="small" type="success" @click="handleDesSubmit">上传到服务器</el-button>
           <el-upload
+            ref="descriptionImgs"
             action="https://jsonplaceholder.typicode.com/posts/"
             :http-request="handleAsyncUpload"
             :on-change="handleDesChange"
@@ -70,24 +72,26 @@
 </template>
 <script>
 // project 产品 description 描述
-import { ApiGoodsCategory, ApiGoodsProUpload } from 'api/goods'
+import { ApiGoodsCategory, ApiGoodsProUpload, ApiGoodsAdd } from 'api/goods'
 export default {
   data () {
     return {
       form: {
         title: '',
-        price: 0,
+        price: null,
         isNew: false,
         isHot: false,
         category: '',
-        projectImgs: [],
-        descriptionImgs: []
+        images: [],
+        detail: []
       },
       categoryData: [],
       rules: {
         title: [{required: true, message: '请输入商品名', trigger: 'blur'}],
-        category: [{required: true, message: '请定义商品类型', trigger: 'blur'}],
-        price: [{required: true, message: '请输入商品价格', trigger: 'blur'}]
+        category: [{required: true, message: '请定义商品类型', trigger: 'change'}],
+        price: [{required: true, message: '请输入商品价格', trigger: 'blur'}],
+        images: [{required: true, message: '请上传产品图', trigger: 'blur'}],
+        detail: [{required: true, message: '请上传描述图', trigger: 'blur'}]
       },
       tempProjectImgs: [],
       tempDescriptionImgs: []
@@ -107,13 +111,13 @@ export default {
       this.tempProjectImgs = fileList
     },
     handleProSubmit () {
-      this.handleAsyncUpload(this.tempProjectImgs, this.form.projectImgs)
+      this.handleAsyncUpload(this.tempProjectImgs, this.form.images)
     },
     handleDesChange (file, fileList) {
       this.tempDescriptionImgs = fileList
     },
     handleDesSubmit () {
-      this.handleAsyncUpload(this.tempDescriptionImgs, this.form.descriptionImgs)
+      this.handleAsyncUpload(this.tempDescriptionImgs, this.form.detail)
     },
     handleAsyncUpload (fileList, fileUrlArr) {
       async function submitProjectImg (fileList) {
@@ -123,21 +127,42 @@ export default {
             fileUrlArr.push(res.url())
           })
         }
+        window.Message.successMessage('上传成功')
       }
       submitProjectImg(fileList)
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.form)
+          this.formatParams()
         } else {
-          console.log('error submit!!')
+          window.Message.errorMessage('请仔细检查参数')
           return false
         }
       })
     },
+    formatParams () {
+      let avatar = this.form.images.length > 0 ? this.form.images[0] : null
+      this.form.price = Number(this.form.price)
+      this.form.avatar = avatar
+      this.submintParams()
+    },
+    submintParams () {
+      ApiGoodsAdd(this.form).then(res => {
+        window.Message.successMessage('创建成功')
+        this.changeRouteToGoodsList()
+      })
+    },
+    changeRouteToGoodsList () {
+      this.$router.push({name: 'goods-list'})
+    },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+      this.resetUpload()
+    },
+    resetUpload () {
+      this.$refs.projectImgs.clearFiles()
+      this.$refs.descriptionImgs.clearFiles()
     }
   }
 }

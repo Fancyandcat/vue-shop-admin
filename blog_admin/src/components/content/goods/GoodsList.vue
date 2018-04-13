@@ -29,7 +29,7 @@
         <el-table-column :resizable=false prop="roleconst" align="center" label="操作">
           <template slot-scope="scope">
             <el-button size="small">修改</el-button>
-            <el-button size="small" type="danger">删除</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,6 +95,9 @@ export default {
     getMatterUpdatedAtDate (row, column) {
       let date = new Date(row.updatedAt)
       return stamp2time(date.getTime())
+    },
+    handleDelete (id) {
+      console.log(id)
     }
   }
 }

@@ -6,6 +6,7 @@ import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
 import GoodsList from '@/components/content/goods/GoodsList'
 import GoodsAdd from '@/components/content/goods/GoodsAdd'
+import GoodsEdit from '@/components/content/goods/GoodsEdit'
 Vue.use(Router)
 
 let goods = [
@@ -18,6 +19,11 @@ let goods = [
     path: 'goods/add',
     name: 'goods-add',
     component: GoodsAdd
+  },
+  {
+    path: 'goods/edit',
+    name: 'goods-edit',
+    component: GoodsEdit
   }
 ]
 

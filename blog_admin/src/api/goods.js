@@ -64,12 +64,32 @@ export function ApiGoodsAdd (params) {
       _good.set(k, params[k])
     }
   }
-  console.log(_good)
   return _good.save()
 }
-
+// 删除商品
 export function ApiGoodsDelete (id) {
   let _good = window.AV.Object.createWithoutData('Goods', id)
   console.log(_good)
   return _good.destroy()
+}
+// 获取商品
+export function ApiGoodsQuery (id) {
+  let _query = new window.AV.Query('Goods')
+  return _query.get(id)
+}
+// 更新商品
+export function ApiGoodsEdit (params, id) {
+  if (!params || typeof params !== 'object' || !id) {
+    return
+  }
+  let _good = window.AV.Object.createWithoutData('Goods', id)
+  let _category = window.AV.Object.createWithoutData('Category', params.category)
+  for (let k in params) {
+    if (k === 'category') {
+      _good.set(k, _category)
+    } else {
+      _good.set(k, params[k])
+    }
+  }
+  return _good.save()
 }

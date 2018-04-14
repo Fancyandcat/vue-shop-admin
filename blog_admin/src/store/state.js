@@ -1,4 +1,5 @@
 const state = {
-  vxCurrentMenu: ''
+  vxCurrentMenu: '',
+  goodsId: ''
 }
 export default state

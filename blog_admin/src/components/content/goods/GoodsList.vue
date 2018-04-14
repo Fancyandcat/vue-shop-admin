@@ -28,7 +28,7 @@
         <el-table-column :resizable=false prop="updatedAt" align="center" label="更新时间" :formatter="getMatterUpdatedAtDate"/>
         <el-table-column :resizable=false prop="roleconst" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button size="small">修改</el-button>
+            <el-button size="small" @click="handleEdit(scope.row.id)">修改</el-button>
             <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -40,6 +40,7 @@
 <script>
 import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete } from 'api/goods'
 import { stamp2time } from 'common/js/common'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -85,11 +86,10 @@ export default {
       this.getList()
     },
     goGoodsAdd () {
-      // this.$emit('changeContent', '添加商品')
       this.$router.push({name: 'goods-add'})
     },
-    goGoodsList () {
-      this.$router.push({name: 'goods-list'})
+    goGoodsEdit () {
+      this.$router.push({name: 'goods-edit'})
     },
     getMatterCreatedDate (row, column) {
       let date = new Date(row.createdAt)
@@ -103,12 +103,19 @@ export default {
       window.Message.confirmDeleteMessage().then(() => {
         ApiGoodsDelete(id).then(res => {
           window.Message.successMessage('删除成功')
-          this.goGoodsList()
+          this.getList()
         }).catch(() => {
           window.Message.errorMessage('删除失败')
         })
       })
-    }
+    },
+    handleEdit (id) {
+      this.setGoodsId(id)
+      this.goGoodsEdit()
+    },
+    ...mapMutations({
+      'setGoodsId': 'SET_GOODS_ID'
+    })
   }
 }
 </script>

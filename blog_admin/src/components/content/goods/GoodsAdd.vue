@@ -145,9 +145,9 @@ export default {
       let avatar = this.form.images.length > 0 ? this.form.images[0] : null
       this.form.price = Number(this.form.price)
       this.form.avatar = avatar
-      this.submintParams()
+      this.submitParams()
     },
-    submintParams () {
+    submitParams () {
       ApiGoodsAdd(this.form).then(res => {
         window.Message.successMessage('创建成功')
         this.goGoodsList()

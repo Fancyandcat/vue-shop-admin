@@ -1,1 +1,3 @@
 export const SET_CURRENT_MENU = 'SET_CURRENT_MENU'
+
+export const SET_GOODS_ID = 'SET_GOODS_ID'

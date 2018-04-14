@@ -51,7 +51,8 @@ export const str2menuIdObj = __menuList(menuList)
 export const routeObj = {
   '主页': 'index',
   '商品列表': 'goods-list',
-  '添加商品': 'goods-add'
+  '添加商品': 'goods-add',
+  '修改商品': 'goods-edit'
 }
 
 // 路由名字，用于面包屑
@@ -61,6 +62,7 @@ export const routeName = {
   },
   'goods': {
     name: '商品列表',
-    add: '新增商品'
+    add: '新增商品',
+    edit: '修改商品'
   }
 }

@@ -42,6 +42,7 @@ export default {
       str && this.$emit('changeMenuRight', str)
     },
     initCurrentMenu () {
+      // TODO 修复menu id
       this.setCurrentMenu(menuList[0].id)
     },
     ...mapMutations({

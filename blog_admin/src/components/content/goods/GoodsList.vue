@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { ApiGoodsCountPage, ApiGoodsList } from 'api/goods'
+import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete } from 'api/goods'
 import { stamp2time } from 'common/js/common'
 export default {
   data () {
@@ -88,6 +88,9 @@ export default {
       // this.$emit('changeContent', '添加商品')
       this.$router.push({name: 'goods-add'})
     },
+    goGoodsList () {
+      this.$router.push({name: 'goods-list'})
+    },
     getMatterCreatedDate (row, column) {
       let date = new Date(row.createdAt)
       return stamp2time(date.getTime())
@@ -97,7 +100,14 @@ export default {
       return stamp2time(date.getTime())
     },
     handleDelete (id) {
-      console.log(id)
+      window.Message.confirmDeleteMessage().then(() => {
+        ApiGoodsDelete(id).then(res => {
+          window.Message.successMessage('删除成功')
+          this.goGoodsList()
+        }).catch(() => {
+          window.Message.errorMessage('删除失败')
+        })
+      })
     }
   }
 }

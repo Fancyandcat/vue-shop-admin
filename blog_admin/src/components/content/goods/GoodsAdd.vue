@@ -150,10 +150,10 @@ export default {
     submintParams () {
       ApiGoodsAdd(this.form).then(res => {
         window.Message.successMessage('创建成功')
-        this.changeRouteToGoodsList()
+        this.goGoodsList()
       })
     },
-    changeRouteToGoodsList () {
+    goGoodsList () {
       this.$router.push({name: 'goods-list'})
     },
     resetForm (formName) {

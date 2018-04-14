@@ -67,3 +67,9 @@ export function ApiGoodsAdd (params) {
   console.log(_good)
   return _good.save()
 }
+
+export function ApiGoodsDelete (id) {
+  let _good = window.AV.Object.createWithoutData('Goods', id)
+  console.log(_good)
+  return _good.destroy()
+}

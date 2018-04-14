@@ -18,4 +18,9 @@ export default class Message {
       message: info
     })
   }
+  confirmDeleteMessage () {
+    return this.that.$alert('是否确认删除', '提示', {
+      confirmButtonText: '确定'
+    })
+  }
 }

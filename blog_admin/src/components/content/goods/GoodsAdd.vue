@@ -104,6 +104,7 @@ export default {
     getGoodsCategory () {
       ApiGoodsCategory().then(res => {
         this.categoryData = res
+        console.log('categoryData', this.categoryData)
       })
     },
     // 关于上传图片的操作

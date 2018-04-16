@@ -4,9 +4,12 @@ import Login from '@/components/view/Login'
 import Cloud from '@/components/view/Cloud'
 import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
+// goodsList
 import GoodsList from '@/components/content/goods/GoodsList'
 import GoodsAdd from '@/components/content/goods/GoodsAdd'
 import GoodsEdit from '@/components/content/goods/GoodsEdit'
+// categoryList
+import CategoryList from '@/components/content/category/CategoryList'
 Vue.use(Router)
 
 let goods = [
@@ -24,6 +27,13 @@ let goods = [
     path: 'goods/edit',
     name: 'goods-edit',
     component: GoodsEdit
+  }
+]
+let category = [
+  {
+    path: 'category',
+    name: 'category-list',
+    component: CategoryList
   }
 ]
 
@@ -60,7 +70,8 @@ let routes = [
   }
 ]
 routes[2].children = routes[2].children.concat(
-  goods
+  goods,
+  category
 )
 
 export default new Router({

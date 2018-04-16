@@ -12,6 +12,7 @@ export const menuList = [{
     id: '000'
   }, {
     name: '商品分类',
+    urlKey: '商品分类',
     id: '001'
   }]
 }, {
@@ -52,7 +53,8 @@ export const routeObj = {
   '主页': 'index',
   '商品列表': 'goods-list',
   '添加商品': 'goods-add',
-  '修改商品': 'goods-edit'
+  '修改商品': 'goods-edit',
+  '商品分类': 'category-list'
 }
 
 // 路由名字，用于面包屑
@@ -64,5 +66,8 @@ export const routeName = {
     name: '商品列表',
     add: '新增商品',
     edit: '修改商品'
+  },
+  'category': {
+    name: '商品分类'
   }
 }

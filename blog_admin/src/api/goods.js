@@ -19,7 +19,10 @@ function __ApiGetGoodsC () {
   let _query = new window.AV.Query('Category')
   _query.equalTo('parent', null)
   return _query.find().then(res => {
-    return res
+    console.log(res)
+    return res.map(result => {
+      return Object.assign(result, {objectId: result.id})
+    })
   })
 }
 function __ApiGetGoodsSubByC (c) {
@@ -35,9 +38,11 @@ function __ApiGetGoodsSubByC (c) {
 export async function ApiGoodsCategory () {
   let _categoris = []
   let _s = await __ApiGetGoodsC()
+  console.log('s', _s)
   for (let i = 0; i < _s.length; i++) {
     _categoris.push({})
     _categoris[i].title = _s[i].attributes.title
+    _categoris[i].objectId = _s[i].objectId
     _categoris[i].children = await __ApiGetGoodsSubByC(_s[i])
   }
   return _categoris

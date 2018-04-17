@@ -1,8 +1,8 @@
 <template>
-  <div class="goods-add">
-    <div class="title">
+  <el-card class="goods-add">
+    <div slot="header">
       <el-row :gutter="20">
-        <el-col :span="3"><h2>添加商品</h2></el-col>
+        <el-col :span="2"><div>添加商品</div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -68,7 +68,7 @@
         </el-form-item>
       </el-form>
     </div>
-  </div>
+  </el-card>
 </template>
 <script>
 // project 产品 description 描述
@@ -174,23 +174,4 @@ export default {
     margin 20px 0
   .content
     width 50%
-  .avatar-uploader .el-upload
-    border 1px dashed #d9d9d9
-    border-radius 6px
-    cursor pointer
-    position relative
-    overflow hidden
-  .avatar-uploader .el-upload:hover
-    border-color #409EFF
-  .avatar-uploader-icon
-    font-size 28px
-    color #8c939d
-    width 178px
-    height 178px
-    line-height 178px
-    text-align center
-  .avatar
-    width 178px
-    height 178px
-    display block
 </style>

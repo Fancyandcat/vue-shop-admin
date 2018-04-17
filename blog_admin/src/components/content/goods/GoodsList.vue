@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-list">
-    <div class="title">
+  <el-card class="goods-list">
+    <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
         <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsAdd">添加商品</el-button></div></el-col>
@@ -8,8 +8,8 @@
     </div>
     <div class="content">
       <el-table :data="tableData" :border=true
-      :highlight-current-row=true v-loading="loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)">
+        :highlight-current-row=true v-loading="loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)">
         <el-table-column :resizable=false align="center" label="缩略图">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" width="100px">
@@ -35,7 +35,7 @@
       </el-table>
       <el-pagination :page-size="pageMsg.pageSize" :current-page="pageMsg.pageNum" :total="pageMsg.total" @current-change="handlePageChange" layout="total,prev,pager,next,jumper"></el-pagination>
     </div>
-  </div>
+  </el-card>
 </template>
 <script>
 import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete } from 'api/goods'

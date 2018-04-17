@@ -10,6 +10,7 @@ import GoodsAdd from '@/components/content/goods/GoodsAdd'
 import GoodsEdit from '@/components/content/goods/GoodsEdit'
 // categoryList
 import CategoryList from '@/components/content/category/CategoryList'
+import CategoryEdit from '@/components/content/category/CategoryEdit'
 Vue.use(Router)
 
 let goods = [
@@ -34,6 +35,11 @@ let category = [
     path: 'category',
     name: 'category-list',
     component: CategoryList
+  },
+  {
+    path: 'category/edit',
+    name: 'category-edit',
+    component: CategoryEdit
   }
 ]
 

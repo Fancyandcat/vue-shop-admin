@@ -6,7 +6,7 @@
       <el-col :span="20" class="content-box">
         <div class="content-crumb">
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index"><span @click="changeRouteByCrumb(title)">{{title}}</span></el-breadcrumb-item>
+            <el-breadcrumb-item v-for="(title, index) in titleArr" :key="index"><span @click="changeRouteByCrumb(title, index!==(titleArr.length-1))">{{title}}</span></el-breadcrumb-item>
           </el-breadcrumb>
         </div>
         <div class="content-wrapper">
@@ -66,7 +66,10 @@ export default {
       routeName[routeNameArr[0]][routeNameArr[1]] && titleArrTemp.push(routeName[routeNameArr[0]][routeNameArr[1]])
       this.titleArr = titleArrTemp
     },
-    changeRouteByCrumb (title) {
+    changeRouteByCrumb (title, flag) {
+      if (!flag) {
+        return false
+      }
       this.setCurrentMenu(str2menuIdObj[title])
       this.$router.push({name: routeObj[title]})
     },
@@ -104,24 +107,25 @@ export default {
       height 100%
       width 100%
       border 1px solid #eef4f8
-      box-shadow 0 0 15px #b8becc
+      box-shadow 0 0 10px #b8becc
       position relative
-      border-radius: 5px
-      padding 20px
+      border-radius 5px
+      padding-right 5px
+      // padding 0 10px
       overflow auto
       &::-webkit-scrollbar
-        width: 10px
-        height: 5px
-        -webkit-border-radius: 4px
+        width 10px
+        height 5px
+        -webkit-border-radius 4px
       &::-webkit-scrollbar-thumb
-        background-color: #ccc
-        -webkit-border-radius: 4px
+        background-color #ccc
+        -webkit-border-radius 4px
       &::-webkit-scrollbar-thumb:hover
-        background-color: #ccc
-        -webkit-border-radius: 4px
+        background-color #ccc
+        -webkit-border-radius 4px
       &::-webkit-scrollbar-track-piece
-        height: 20px
-        -webkit-border-radius: 4px
+        height 20px
+        -webkit-border-radius 4px
 .fade-enter-active,
 .fade-leave-active
   transition opacity .3s

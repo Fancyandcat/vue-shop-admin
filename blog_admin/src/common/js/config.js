@@ -54,7 +54,8 @@ export const routeObj = {
   '商品列表': 'goods-list',
   '添加商品': 'goods-add',
   '修改商品': 'goods-edit',
-  '商品分类': 'category-list'
+  '商品分类': 'category-list',
+  '编辑分类': 'category-edit'
 }
 
 // 路由名字，用于面包屑
@@ -68,6 +69,7 @@ export const routeName = {
     edit: '修改商品'
   },
   'category': {
-    name: '商品分类'
+    name: '商品分类',
+    edit: '编辑商品'
   }
 }

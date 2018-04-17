@@ -14,7 +14,7 @@ export function ApiGoodsList (pageMsg) {
   return _query.find()
 }
 
-// 为获取顶级分类提供服务，请勿在外部调用 src:https://segmentfault.com/a/1190000007535316
+// 为获取顶级分类提供服务 src:https://segmentfault.com/a/1190000007535316
 function __ApiGetGoodsC () {
   let _query = new window.AV.Query('Category')
   _query.equalTo('parent', null)
@@ -30,20 +30,31 @@ function __ApiGetGoodsSubByC (c) {
   _query.equalTo('parent', c)
   return _query.find().then(res => {
     return res.map(result => {
-      return Object.assign({}, result.attributes, {objectId: result.id})
+      return Object.assign({}, {title: result.attributes.title, images: result.attributes.avatar.attributes.url}, {objectId: result.id})
     })
   })
 }
-// 获取商品顶级分类
+// 获取商品分类
 export async function ApiGoodsCategory () {
   let _categoris = []
   let _s = await __ApiGetGoodsC()
-  console.log('s', _s)
   for (let i = 0; i < _s.length; i++) {
     _categoris.push({})
     _categoris[i].title = _s[i].attributes.title
     _categoris[i].objectId = _s[i].objectId
     _categoris[i].children = await __ApiGetGoodsSubByC(_s[i])
+  }
+  return _categoris
+}
+
+// 获取商品顶级分类
+export async function ApiGoodsTopCategory () {
+  let _categoris = []
+  let _s = await __ApiGetGoodsC()
+  for (let i = 0; i < _s.length; i++) {
+    _categoris.push({})
+    _categoris[i].title = _s[i].attributes.title
+    _categoris[i].objectId = _s[i].objectId
   }
   return _categoris
 }

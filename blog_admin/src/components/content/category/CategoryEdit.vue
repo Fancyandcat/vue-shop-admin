@@ -134,10 +134,11 @@ export default {
     submitParams (params) {
       ApiCategoryAdd(params).then(res => {
         window.Message.successMessage('创建成功')
+        this.goCategoryList()
       })
     },
-    goGoodsList () {
-      this.$router.push({name: 'goods-list'})
+    goCategoryList () {
+      this.$router.push({name: 'category-list'})
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

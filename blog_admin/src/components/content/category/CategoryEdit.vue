@@ -121,19 +121,18 @@ export default {
       })
     },
     formatParams () {
+      let params = {}
+      params.title = this.form.title
       if (this.form.category !== TEMP_KEY_TOP_LEVEL) {
-        this.form.avatar = this.form.images.length > 0 ? this.form.images[0] : null
+        params.avatar = this.form.images.length > 0 ? this.form.images[0] : null
+        params.parent = this.form.category
       } else {
-        this.form.banner = this.form.detail.length > 0 ? this.form.detail[0] : null
-        delete this.form.category
-        delete this.form.detail
-        delete this.form.images
+        params.banner = this.form.detail.length > 0 ? this.form.detail[0] : null
       }
-      this.submitParams()
+      this.submitParams(params)
     },
-    submitParams () {
-      // console.log(this.form)
-      ApiCategoryAdd(this.form).then(res => {
+    submitParams (params) {
+      ApiCategoryAdd(params).then(res => {
         window.Message.successMessage('创建成功')
       })
     },

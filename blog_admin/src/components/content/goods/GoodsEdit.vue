@@ -1,8 +1,8 @@
 <template>
-  <div class="goods-add">
-    <div class="title">
+  <el-card class="goods-edit">
+    <div slot="header">
       <el-row :gutter="20">
-        <el-col :span="3"><h2>修改商品</h2></el-col>
+        <el-col :span="2"><div>修改商品</div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -69,7 +69,7 @@
         </el-form-item>
       </el-form>
     </div>
-  </div>
+  </el-card>
 </template>
 <script>
 import { ApiGoodsCategory, ApiGoodsQuery, ApiGoodsEdit } from 'api/goods'
@@ -144,12 +144,6 @@ export default {
       })
     },
     formatParams () {
-      this.form.images = this.form.images.map(image => {
-        return image.url()
-      })
-      this.form.detail = this.form.detail.map(det => {
-        return det.url()
-      })
       let avatar = this.form.images.length > 0 ? this.form.images[0] : null
       this.form.price = Number(this.form.price)
       this.form.avatar = avatar

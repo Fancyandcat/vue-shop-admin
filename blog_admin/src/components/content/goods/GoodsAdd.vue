@@ -72,8 +72,10 @@
 </template>
 <script>
 // project 产品 description 描述
-import { ApiGoodsCategory, ApiGoodsProUpload, ApiGoodsAdd } from 'api/goods'
+import { ApiGoodsCategory, ApiGoodsAdd } from 'api/goods'
+import { uploadImg } from 'common/js/mixinCommon'
 export default {
+  mixins: [uploadImg],
   data () {
     return {
       form: {
@@ -104,33 +106,7 @@ export default {
     getGoodsCategory () {
       ApiGoodsCategory().then(res => {
         this.categoryData = res
-        console.log('categoryData', this.categoryData)
       })
-    },
-    // 关于上传图片的操作
-    handleProChange (file, fileList) {
-      this.tempProjectImgs = fileList
-    },
-    handleProSubmit () {
-      this.handleAsyncUpload(this.tempProjectImgs, this.form.images)
-    },
-    handleDesChange (file, fileList) {
-      this.tempDescriptionImgs = fileList
-    },
-    handleDesSubmit () {
-      this.handleAsyncUpload(this.tempDescriptionImgs, this.form.detail)
-    },
-    handleAsyncUpload (fileList, fileUrlArr) {
-      async function submitProjectImg (fileList) {
-        for (let i = 0; i < fileList.length; i++) {
-          let file = fileList[i]
-          await ApiGoodsProUpload(file.name, file.raw).then(res => {
-            fileUrlArr.push(res.url())
-          })
-        }
-        window.Message.successMessage('上传成功')
-      }
-      submitProjectImg(fileList)
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -143,6 +119,12 @@ export default {
       })
     },
     formatParams () {
+      this.form.images = this.form.images.map(image => {
+        return image.url()
+      })
+      this.form.detail = this.form.detail.map(det => {
+        return det.url()
+      })
       let avatar = this.form.images.length > 0 ? this.form.images[0] : null
       this.form.price = Number(this.form.price)
       this.form.avatar = avatar

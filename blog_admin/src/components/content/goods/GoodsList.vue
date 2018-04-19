@@ -113,7 +113,7 @@ export default {
       this.setGoodsId(id)
       this.goGoodsEdit()
     },
-    ...mapMutations({
+    ...mapMutations('Goods', {
       'setGoodsId': 'SET_GOODS_ID'
     })
   }

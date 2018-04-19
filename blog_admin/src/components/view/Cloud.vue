@@ -74,7 +74,7 @@ export default {
       this.$router.push({name: routeObj[title]})
     },
     // 面包屑相关操作结束
-    ...mapMutations({
+    ...mapMutations('Basic', {
       'setCurrentMenu': 'SET_CURRENT_MENU'
     })
   },

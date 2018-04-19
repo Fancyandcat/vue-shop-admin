@@ -157,7 +157,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('Goods', [
       'goodsId'
     ])
   }

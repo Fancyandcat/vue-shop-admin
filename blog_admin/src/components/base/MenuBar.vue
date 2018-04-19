@@ -46,12 +46,12 @@ export default {
       // TODO 修复menu id
       this.setCurrentMenu(menuList[0].id)
     },
-    ...mapMutations({
+    ...mapMutations('Basic', {
       'setCurrentMenu': 'SET_CURRENT_MENU'
     })
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('Basic', [
       'vxCurrentMenu'
     ])
   }

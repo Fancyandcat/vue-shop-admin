@@ -5,11 +5,12 @@ export function ApiCategoryQuery (id) {
 }
 
 // 创建分类，使用category属性判断是否为顶级分类
-export function ApiCategoryAdd (params) {
+export function ApiCategoryAdd (params, id) {
   if (!params || typeof params !== 'object') {
     return
   }
-  let _category = window.AV.Object.createWithoutData('Category')
+  let _category = null
+  _category = window.AV.Object.createWithoutData('Category', id)
   let _subCategory = null
   if (params.parent) {
     _subCategory = window.AV.Object.createWithoutData('Category', params.parent)

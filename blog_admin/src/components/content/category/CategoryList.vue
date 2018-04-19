@@ -67,6 +67,7 @@ export default {
     }
   },
   created () {
+    this.setCategoryId('')
     this.getGoodsCategory()
   },
   methods: {

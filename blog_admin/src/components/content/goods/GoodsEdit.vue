@@ -121,14 +121,12 @@ export default {
     formatGoodsData (data) {
       this.form = data
       this.form.category = data.category.id
-      console.log('this.form', this.form)
       this.form.images.forEach(url => {
         this.tempProjectList.push({name: '', url: url})
       })
       this.form.detail.forEach(url => {
         this.tempDescriptionList.push({name: '', url: url})
       })
-      console.log(this.tempProjectList, this.tempDescriptionList)
     },
     goGoodsList () {
       this.$router.push({name: 'goods-list'})

@@ -30,7 +30,8 @@
             list-type="picture-card"
             :limit="1"
             multiple
-            :auto-upload="false">
+            :auto-upload="false"
+            :file-list="tempProjectList">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           </el-upload>
         </el-form-item>
@@ -44,7 +45,8 @@
             list-type="picture-card"
             :limit="5"
             multiple
-            :auto-upload="false">
+            :auto-upload="false"
+            :file-list="tempDescriptionList">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           </el-upload>
         </el-form-item>
@@ -82,7 +84,9 @@ export default {
       rulesRepertory: {
         avatar: [{required: true, message: '请上传分类图', trigger: 'blur'}],
         banner: [{required: true, message: '请上传横幅图', trigger: 'blur'}]
-      }
+      },
+      tempProjectList: [],
+      tempDescriptionList: []
     }
   },
   created () {
@@ -106,6 +110,14 @@ export default {
     formatCategoryData (data) {
       this.form.title = data.title
       data.parent ? this.form.category = data.parent.id : this.form.category = this.tempKey
+      data.avatar && (this.form.images = [data.avatar])
+      data.banner && (this.form.detail = [data.banner])
+      this.form.images.forEach(url => {
+        this.tempProjectList.push({name: '', url: url.attributes.url})
+      })
+      this.form.detail.forEach(url => {
+        this.tempDescriptionList.push({name: '', url: url.attributes.url})
+      })
     },
     changeCategory () {
       if (this.form.category !== TEMP_KEY_TOP_LEVEL) {
@@ -146,7 +158,7 @@ export default {
       this.submitParams(params)
     },
     submitParams (params) {
-      ApiCategoryAdd(params).then(res => {
+      ApiCategoryAdd(params, this.categoryId).then(res => {
         window.Message.successMessage('创建成功')
         this.clearCategoryList()
         this.goCategoryList()

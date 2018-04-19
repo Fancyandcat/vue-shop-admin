@@ -1,3 +1,9 @@
+// 获取分类，通过制定的id
+export function ApiCategoryQuery (id) {
+  let _category = new window.AV.Query('Category')
+  return _category.get(id)
+}
+
 // 创建分类，使用category属性判断是否为顶级分类
 export function ApiCategoryAdd (params) {
   if (!params || typeof params !== 'object') {

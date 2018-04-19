@@ -58,8 +58,9 @@
 </template>
 <script>
 import { ApiGoodsTopCategory } from 'api/goods'
-import { ApiCategoryAdd } from 'api/category'
+import { ApiCategoryQuery, ApiCategoryAdd } from 'api/category'
 import { uploadImg } from 'common/js/mixinCommon'
+import { mapMutations, mapGetters } from 'vuex'
 const TEMP_KEY_TOP_LEVEL = 'tempKeyTopLevel'
 export default {
   mixins: [uploadImg],
@@ -86,12 +87,25 @@ export default {
   },
   created () {
     this.getGoodsTopCategory()
+    this.initCurrentInfo()
   },
   methods: {
     getGoodsTopCategory () {
       ApiGoodsTopCategory().then(res => {
         this.setCategoryData(res)
       })
+    },
+    initCurrentInfo () {
+      if (!this.categoryId) {
+        return false
+      }
+      ApiCategoryQuery(this.categoryId).then(category => {
+        this.formatCategoryData(category.attributes)
+      })
+    },
+    formatCategoryData (data) {
+      this.form.title = data.title
+      data.parent ? this.form.category = data.parent.id : this.form.category = this.tempKey
     },
     changeCategory () {
       if (this.form.category !== TEMP_KEY_TOP_LEVEL) {
@@ -134,11 +148,15 @@ export default {
     submitParams (params) {
       ApiCategoryAdd(params).then(res => {
         window.Message.successMessage('创建成功')
+        this.clearCategoryList()
         this.goCategoryList()
       })
     },
     goCategoryList () {
       this.$router.push({name: 'category-list'})
+    },
+    clearCategoryList () {
+      this.setCategoryId('')
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
@@ -147,7 +165,15 @@ export default {
     resetUpload () {
       this.$refs.projectImgs.clearFiles()
       this.$refs.descriptionImgs.clearFiles()
-    }
+    },
+    ...mapMutations('Category', {
+      'setCategoryId': 'SET_CATEGORY_ID'
+    })
+  },
+  computed: {
+    ...mapGetters('Category', [
+      'categoryId'
+    ])
   }
 }
 </script>

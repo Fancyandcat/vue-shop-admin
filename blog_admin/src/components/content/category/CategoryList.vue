@@ -12,7 +12,7 @@
           <template slot="title">
             <el-row :gutter="20">
               <el-col :span="2"><div>{{category.title}}</div></el-col>
-              <el-col :span="2" :offset="10"><div><el-button size="mini" @click.stop="handleEdit">编辑</el-button></div></el-col>
+              <el-col :span="2" :offset="10"><div><el-button size="mini" @click.stop="handleEdit(category.objectId)">编辑</el-button></div></el-col>
               <el-col :span="2"><div><el-button size="mini" type="danger" :disabled="category.children.length!==0" @click.stop="handleDelete(category.objectId)">删除</el-button></div></el-col>
             </el-row>
           </template>
@@ -40,6 +40,7 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  @click="handleEdit(scope.row.objectId)"
                   >编辑</el-button>
                 <el-button
                   size="mini"
@@ -57,6 +58,7 @@
 <script>
 import { ApiGoodsCategory } from 'api/goods'
 import { ApiCategoryDelete } from 'api/category'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -76,8 +78,9 @@ export default {
     goCategoryEdit () {
       this.$router.push({name: 'category-edit'})
     },
-    handleEdit () {
-      console.log('编辑页面')
+    handleEdit (id) {
+      this.setCategoryId(id)
+      this.goCategoryEdit()
     },
     handleDelete (id) {
       window.Message.confirmDeleteMessage().then(() => {
@@ -88,7 +91,10 @@ export default {
           window.Message.errorMessage('删除失败')
         })
       })
-    }
+    },
+    ...mapMutations('Category', {
+      'setCategoryId': 'SET_CATEGORY_ID'
+    })
   }
 }
 </script>

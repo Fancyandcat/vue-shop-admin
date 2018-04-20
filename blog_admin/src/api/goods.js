@@ -66,22 +66,6 @@ export function ApiGoodsProUpload (name, file) {
   let _file = new window.AV.File(name, file)
   return _file.save()
 }
-// 新增商品
-export function ApiGoodsAdd (params) {
-  if (!params || typeof params !== 'object') {
-    return
-  }
-  let _good = window.AV.Object.createWithoutData('Goods')
-  let _category = window.AV.Object.createWithoutData('Category', params.category)
-  for (let k in params) {
-    if (k === 'category') {
-      _good.set(k, _category)
-    } else {
-      _good.set(k, params[k])
-    }
-  }
-  return _good.save()
-}
 // 删除商品
 export function ApiGoodsDelete (id) {
   let _good = window.AV.Object.createWithoutData('Goods', id)
@@ -95,7 +79,8 @@ export function ApiGoodsQuery (id) {
 }
 // 更新商品
 export function ApiGoodsEdit (params, id) {
-  if (!params || typeof params !== 'object' || !id) {
+  console.log('id', id)
+  if (!params || typeof params !== 'object') {
     return
   }
   let _good = window.AV.Object.createWithoutData('Goods', id)

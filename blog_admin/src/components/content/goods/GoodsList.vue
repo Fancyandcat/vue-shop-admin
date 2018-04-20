@@ -3,7 +3,7 @@
     <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
-        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsAdd">添加商品</el-button></div></el-col>
+        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -54,6 +54,7 @@ export default {
     }
   },
   created () {
+    this.resetGoodsId()
     this.getPage()
     this.getList()
   },
@@ -85,9 +86,6 @@ export default {
       this.pageMsg.pageNum = i
       this.getList()
     },
-    goGoodsAdd () {
-      this.$router.push({name: 'goods-add'})
-    },
     goGoodsEdit () {
       this.$router.push({name: 'goods-edit'})
     },
@@ -112,6 +110,9 @@ export default {
     handleEdit (id) {
       this.setGoodsId(id)
       this.goGoodsEdit()
+    },
+    resetGoodsId () {
+      this.setGoodsId('')
     },
     ...mapMutations('Goods', {
       'setGoodsId': 'SET_GOODS_ID'

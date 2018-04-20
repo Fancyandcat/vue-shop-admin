@@ -109,13 +109,11 @@ export default {
   },
   methods: {
     initCurrentInfo () {
+      if (!this.goodsId) {
+        return false
+      }
       ApiGoodsQuery(this.goodsId).then(res => {
         this.formatGoodsData(res.attributes)
-      })
-    },
-    getGoodsCategory () {
-      ApiGoodsCategory().then(res => {
-        this.categoryData = res
       })
     },
     formatGoodsData (data) {
@@ -126,6 +124,11 @@ export default {
       })
       this.form.detail.forEach(url => {
         this.tempDescriptionList.push({name: '', url: url})
+      })
+    },
+    getGoodsCategory () {
+      ApiGoodsCategory().then(res => {
+        this.categoryData = res
       })
     },
     goGoodsList () {
@@ -142,9 +145,19 @@ export default {
       })
     },
     formatParams () {
-      let avatar = this.form.images.length > 0 ? this.form.images[0] : null
+      if (this.goodsId) {
+        this.form.avatar = this.form.images.length > 0 ? this.form.images[0] : null
+      } else {
+        this.form.images = this.form.images.map(image => {
+          return image.url()
+        })
+        this.form.detail = this.form.detail.map(det => {
+          return det.url()
+        })
+        this.form.avatar = this.form.images.length > 0 ? this.form.images[0] : null
+      }
       this.form.price = Number(this.form.price)
-      this.form.avatar = avatar
+      console.log(this.form)
       this.submitParams()
     },
     submitParams () {

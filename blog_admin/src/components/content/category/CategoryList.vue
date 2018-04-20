@@ -67,7 +67,7 @@ export default {
     }
   },
   created () {
-    this.setCategoryId('')
+    this.resetCategoryId()
     this.getGoodsCategory()
   },
   methods: {
@@ -92,6 +92,9 @@ export default {
           window.Message.errorMessage('删除失败')
         })
       })
+    },
+    resetCategoryId () {
+      this.setCategoryId('')
     },
     ...mapMutations('Category', {
       'setCategoryId': 'SET_CATEGORY_ID'

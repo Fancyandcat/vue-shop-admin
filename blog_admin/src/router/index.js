@@ -6,7 +6,6 @@ import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
 // goodsList
 import GoodsList from '@/components/content/goods/GoodsList'
-import GoodsAdd from '@/components/content/goods/GoodsAdd'
 import GoodsEdit from '@/components/content/goods/GoodsEdit'
 // categoryList
 import CategoryList from '@/components/content/category/CategoryList'
@@ -18,11 +17,6 @@ let goods = [
     path: 'goods',
     name: 'goods-list',
     component: GoodsList
-  },
-  {
-    path: 'goods/add',
-    name: 'goods-add',
-    component: GoodsAdd
   },
   {
     path: 'goods/edit',

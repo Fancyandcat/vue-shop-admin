@@ -21,6 +21,7 @@
 </template>
 <script>
 import { ApiLoginOut } from 'api/login'
+import { mapMutations } from 'vuex'
 export default {
   deta () {
     return {
@@ -36,10 +37,14 @@ export default {
     },
     loginOut () {
       ApiLoginOut()
+      this.clearCurrentMenu()
       this.$router.push({ name: 'login' })
     },
     changeRouteToInfo () {
-    }
+    },
+    ...mapMutations('Basic', {
+      'clearCurrentMenu': 'CLEAR_CURRENT_MENU'
+    })
   }
 }
 </script>

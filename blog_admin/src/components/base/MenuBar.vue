@@ -43,8 +43,9 @@ export default {
       str && this.$emit('changeMenuRight', str)
     },
     initCurrentMenu () {
+      console.log('id', this.vxCurrentMenu)
       // TODO 修复menu id
-      this.setCurrentMenu(menuList[0].id)
+      // this.setCurrentMenu(menuList[0].id)
     },
     ...mapMutations('Basic', {
       'setCurrentMenu': 'SET_CURRENT_MENU'

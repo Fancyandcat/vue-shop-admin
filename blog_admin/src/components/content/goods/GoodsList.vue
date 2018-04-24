@@ -3,7 +3,9 @@
     <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
-        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
+        <el-col :span="4"><div><el-autocomplete placeholder="搜索活动、用户" icon="search" v-model="searchObj.keyword" :trigger-on-focus="false" :fetch-suggestions="querySearchAsync" @select="handleSelect"></el-autocomplete>
+</div></el-col>
+        <el-col :span="2" :offset="16"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -38,7 +40,7 @@
   </el-card>
 </template>
 <script>
-import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete } from 'api/goods'
+import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete, ApiGoodsAutocomplete } from 'api/goods'
 import { stamp2time } from 'common/js/common'
 import { mapMutations } from 'vuex'
 export default {
@@ -50,13 +52,17 @@ export default {
         total: 1,
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      searchObj: {
+        keyword: ''
+      },
+      timeout: null
     }
   },
   created () {
     this.resetGoodsId()
     this.getPage()
-    this.getList()
+    this.getList(this.pageMsg)
   },
   methods: {
     getPage () {
@@ -64,9 +70,9 @@ export default {
         this.pageMsg.total = res.length
       })
     },
-    getList () {
+    getList (page, id) {
       this.loading = true
-      ApiGoodsList(this.pageMsg).then(res => {
+      ApiGoodsList(page, id).then(res => {
         if (Array.isArray(res)) {
           this.tableData = res.map(item => {
             return {
@@ -84,7 +90,7 @@ export default {
     },
     handlePageChange (i) {
       this.pageMsg.pageNum = i
-      this.getList()
+      this.getList(this.pageMsg)
     },
     goGoodsEdit () {
       this.$router.push({name: 'goods-edit'})
@@ -101,7 +107,7 @@ export default {
       window.Message.confirmDeleteMessage().then(() => {
         ApiGoodsDelete(id).then(res => {
           window.Message.successMessage('删除成功')
-          this.getList()
+          this.getList(this.pageMsg)
         }).catch(() => {
           window.Message.errorMessage('删除失败')
         })
@@ -113,6 +119,23 @@ export default {
     },
     resetGoodsId () {
       this.setGoodsId('')
+    },
+    querySearchAsync (queryString, cb) {
+      if (queryString !== '') {
+        ApiGoodsAutocomplete(queryString).then((res) => {
+          let data = []
+          res.forEach(element => {
+            data.push({'value': element.get('title'), 'objectId': element.get('objectId')})
+          })
+          clearTimeout(this.timeout)
+          this.timeout = setTimeout(() => {
+            cb(data)
+          }, 500)
+        })
+      }
+    },
+    handleSelect (item) {
+      this.getList(this.pageMsg, item.objectId)
     },
     ...mapMutations('Goods', {
       'setGoodsId': 'SET_GOODS_ID'

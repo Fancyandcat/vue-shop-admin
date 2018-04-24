@@ -5,12 +5,16 @@ export function ApiGoodsCountPage () {
 }
 
 // 获取商品列表
-export function ApiGoodsList (pageMsg) {
+export function ApiGoodsList (pageMsg, id) {
   let _query = new window.AV.Query('Goods')
   _query.include('category')
   _query.descending('createdAt')
-  _query.limit(pageMsg.pageSize)
-  _query.skip(pageMsg.pageSize * (pageMsg.pageNum - 1))
+  if (id) {
+    _query.equalTo('objectId', id)
+  } else {
+    _query.limit(pageMsg.pageSize)
+    _query.skip(pageMsg.pageSize * (pageMsg.pageNum - 1))
+  }
   return _query.find()
 }
 
@@ -93,4 +97,10 @@ export function ApiGoodsEdit (params, id) {
     }
   }
   return _good.save()
+}
+// 关键词搜索
+export function ApiGoodsAutocomplete (str) {
+  let _query = new window.AV.Query('Goods')
+  _query.contains('title', str)
+  return _query.find()
 }

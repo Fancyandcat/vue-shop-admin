@@ -3,9 +3,9 @@
     <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
-        <el-col :span="4"><div><el-autocomplete placeholder="搜索活动、用户" icon="search" v-model="searchObj.keyword" :trigger-on-focus="false" :fetch-suggestions="querySearchAsync" @select="handleSelect"></el-autocomplete>
-</div></el-col>
-        <el-col :span="2" :offset="16"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
+        <!-- <el-col :span="6"><div><el-autocomplete placeholder="搜索活动、用户" icon="search" v-model="searchObj.keyword" :trigger-on-focus="false" :fetch-suggestions="querySearchAsync" @select="handleSelect"></el-autocomplete> -->
+<!-- </div></el-col> -->
+        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -71,6 +71,7 @@ export default {
       })
     },
     getList (page, id) {
+      console.log(page)
       this.loading = true
       ApiGoodsList(page, id).then(res => {
         if (Array.isArray(res)) {
@@ -121,6 +122,7 @@ export default {
       this.setGoodsId('')
     },
     querySearchAsync (queryString, cb) {
+      console.log(queryString, 0)
       if (queryString !== '') {
         ApiGoodsAutocomplete(queryString).then((res) => {
           let data = []

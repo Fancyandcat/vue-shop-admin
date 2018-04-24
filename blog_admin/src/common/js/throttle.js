@@ -13,21 +13,14 @@ export const throttle = (obj, fn, interval = 300) => {
   return (function () {
     let args = arguments
     let _me = this
-    // console.log(window.firstTimeThrottle)
     if (obj.timeFlag) {
-      _self.apply(_me, arguments)
-      obj.timeFlag = false
-      return
-    }
-    if (obj.throttleTimer) {
-      // console.log('计时器存在')
-      return false
-    }
-    obj.throttleTimer = setTimeout(function () {
-      clearTimeout(obj.throttleTimer)
-      obj.throttleTimer = null
-      // console.log('这里需要延迟执行');
       _self.apply(_me, args)
-    }, interval)
+      obj.timeFlag = false
+      obj.throttleTimer = setTimeout(function () {
+        clearTimeout(obj.throttleTimer)
+        obj.throttleTimer = null
+        obj.timeFlag = true
+      }, interval)
+    }
   })()
 }

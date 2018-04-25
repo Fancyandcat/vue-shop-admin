@@ -3,56 +3,43 @@
     <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
-        <!-- <el-col :span="6"><div><el-autocomplete placeholder="搜索活动、用户" icon="search" v-model="searchObj.keyword" :trigger-on-focus="false" :fetch-suggestions="querySearchAsync" @select="handleSelect"></el-autocomplete> -->
-<!-- </div></el-col> -->
-        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
+        <el-col :span="6"><div><el-autocomplete placeholder="搜索商品" icon="search" v-model="searchObj.keyword" :trigger-on-focus="false" :fetch-suggestions="querySearchAsync" @select="handleSelect"></el-autocomplete></div></el-col>
+        <el-col :span="2" :offset="14"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
-      <el-table :data="tableData" :border=true
-        :highlight-current-row=true v-loading="loading"
-        element-loading-background="rgba(0, 0, 0, 0.8)">
-        <el-table-column :resizable=false align="center" label="缩略图">
-          <template slot-scope="scope">
-            <img :src="scope.row.avatar" width="100px">
-          </template>
-        </el-table-column>
-        <el-table-column :resizable=false prop="title" align="center" label="名称" />
-        <el-table-column :resizable=false prop="price" align="center" sortable label="价格" />
-        <el-table-column :resizable=false prop="category.attributes.title" align="center" label="分类" />
-        <el-table-column :resizable=false align="center" label="状态">
-          <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.isNew">新品</el-tag>
-            <el-tag type="danger" v-if="scope.row.isHot">热卖</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column :resizable=false prop="createdAt" align="center" label="创建时间" :formatter="getMatterCreatedDate"/>
-        <el-table-column :resizable=false prop="updatedAt" align="center" label="更新时间" :formatter="getMatterUpdatedAtDate"/>
-        <el-table-column :resizable=false prop="roleconst" align="center" label="操作">
-          <template slot-scope="scope">
-            <el-button size="small" @click="handleEdit(scope.row.id)">修改</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <goods-table :data="tableData" v-loading="loading" :getList="getList"></goods-table>
       <el-pagination :page-size="pageMsg.pageSize" :current-page="pageMsg.pageNum" :total="pageMsg.total" @current-change="handlePageChange" layout="total,prev,pager,next,jumper"></el-pagination>
     </div>
+    <el-dialog
+      title="搜索"
+      :visible.sync="dialogVisible"
+      width="70%">
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleCloseDialog">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-card>
 </template>
 <script>
-import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsDelete, ApiGoodsAutocomplete } from 'api/goods'
-import { stamp2time } from 'common/js/common'
+import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsAutocomplete, ApiGoodsQuery } from 'api/goods'
 import { mapMutations } from 'vuex'
+import GoodsTable from './GoodsTable'
 export default {
+  components: {
+    GoodsTable
+  },
   data () {
     return {
       tableData: [],
       loading: true,
+      aGoodsData: [],
       pageMsg: {
         total: 1,
         pageNum: 1,
         pageSize: 10
       },
+      dialogVisible: false,
       searchObj: {
         keyword: ''
       },
@@ -62,7 +49,7 @@ export default {
   created () {
     this.resetGoodsId()
     this.getPage()
-    this.getList(this.pageMsg)
+    this.getList()
   },
   methods: {
     getPage () {
@@ -70,10 +57,10 @@ export default {
         this.pageMsg.total = res.length
       })
     },
-    getList (page, id) {
-      console.log(page)
+    getList () {
       this.loading = true
-      ApiGoodsList(page, id).then(res => {
+      console.log('shuaxin')
+      ApiGoodsList(this.pageMsg).then(res => {
         if (Array.isArray(res)) {
           this.tableData = res.map(item => {
             return {
@@ -91,35 +78,13 @@ export default {
     },
     handlePageChange (i) {
       this.pageMsg.pageNum = i
-      this.getList(this.pageMsg)
-    },
-    goGoodsEdit () {
-      this.$router.push({name: 'goods-edit'})
-    },
-    getMatterCreatedDate (row, column) {
-      let date = new Date(row.createdAt)
-      return stamp2time(date.getTime())
-    },
-    getMatterUpdatedAtDate (row, column) {
-      let date = new Date(row.updatedAt)
-      return stamp2time(date.getTime())
-    },
-    handleDelete (id) {
-      window.Message.confirmDeleteMessage().then(() => {
-        ApiGoodsDelete(id).then(res => {
-          window.Message.successMessage('删除成功')
-          this.getList(this.pageMsg)
-        }).catch(() => {
-          window.Message.errorMessage('删除失败')
-        })
-      })
-    },
-    handleEdit (id) {
-      this.setGoodsId(id)
-      this.goGoodsEdit()
+      this.getList()
     },
     resetGoodsId () {
       this.setGoodsId('')
+    },
+    goGoodsEdit () {
+      this.$router.push({name: 'goods-edit'})
     },
     querySearchAsync (queryString, cb) {
       console.log(queryString, 0)
@@ -137,7 +102,21 @@ export default {
       }
     },
     handleSelect (item) {
-      this.getList(this.pageMsg, item.objectId)
+      ApiGoodsQuery(item.objectId).then(res => {
+        let tempArr = []
+        tempArr.push({
+          ...res.attributes,
+          id: res.id,
+          createdAt: res.createdAt,
+          updatedAt: res.updatedAt
+        })
+        this.aGoodsData = tempArr
+      })
+      this.dialogVisible = true
+    },
+    handleCloseDialog () {
+      this.dialogVisible = false
+      this.searchObj.keyword = ''
     },
     ...mapMutations('Goods', {
       'setGoodsId': 'SET_GOODS_ID'

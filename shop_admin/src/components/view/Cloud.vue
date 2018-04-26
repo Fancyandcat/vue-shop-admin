@@ -75,7 +75,8 @@ export default {
     },
     // 面包屑相关操作结束
     ...mapMutations('Basic', {
-      'setCurrentMenu': 'SET_CURRENT_MENU'
+      'setCurrentMenu': 'SET_CURRENT_MENU',
+      'clearQueryObj': 'CLEAR_QUERY_OBJ'
     })
   },
   watch: {
@@ -85,10 +86,7 @@ export default {
       } else {
         this.changeCrumbByRoute()
       }
-      // if (from.name.split('-')[0] !== 'bus' && to.name.split('-')[0] !== 'bus') {
-      //   // from.name.split('-')[0] !== to.name.split('-')[0]
-      //   from.name.split('-')[0] !== to.name.split('-')[0] && this.setCurrentMenu(to.name)
-      // }
+      from.name.split('-')[0] !== to.name.split('-')[0] && (this.clearQueryObj())
     }
   }
 }
@@ -111,7 +109,6 @@ export default {
       position relative
       border-radius 5px
       padding-right 5px
-      // padding 0 10px
       overflow auto
       &::-webkit-scrollbar
         width 10px

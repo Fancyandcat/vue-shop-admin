@@ -1,7 +1,11 @@
 export const SET_CURRENT_MENU = 'SET_CURRENT_MENU'
 
+export const CLEAR_CURRENT_MENU = 'CLEAR_CURRENT_MENU'
+
+export const SET_QUERY_OBJ = 'SET_QUERY_OBJ'
+
+export const CLEAR_QUERY_OBJ = 'CLEAR_QUERY_OBJ'
+
 export const SET_GOODS_ID = 'SET_GOODS_ID'
 
 export const SET_CATEGORY_ID = 'SET_CATEGORY_ID'
-
-export const CLEAR_CURRENT_MENU = 'CLEAR_CURRENT_MENU'

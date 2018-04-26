@@ -1,4 +1,5 @@
-import { ApiGoodsProUpload } from 'api/goods'
+import { ApiGoodsProUpload, ApiGoodsCountPage } from 'api/goods'
+import { mapMutations, mapGetters } from 'vuex'
 export const uploadImg = {
   data () {
     return {
@@ -32,5 +33,44 @@ export const uploadImg = {
     handleDesChange (file, fileList) {
       this.tempDescriptionImgs = fileList
     }
+  }
+}
+export const initPage = {
+  data () {
+    return {
+      pageMsg: {
+        total: 1,
+        pageNum: 1,
+        pageSize: 10
+      }
+    }
+  },
+  methods: {
+    initPage () {
+      ApiGoodsCountPage().then(res => {
+        this.pageMsg.total = res.length
+      }).then(() => {
+        this.getPage()
+        this.getList()
+      })
+    },
+    getPage () {
+      if (this.vxQueryObj[this.$route.name] && this.vxQueryObj[this.$route.name].page) {
+        this.pageMsg.pageNum = this.vxQueryObj[this.$route.name].page
+      }
+    },
+    handlePageChange (i) {
+      this.pageMsg.pageNum = i
+      this.setQueryObj({ path: this.$route.name, query: { page: i } })
+      this.getList()
+    },
+    ...mapMutations('Basic', {
+      'setQueryObj': 'SET_QUERY_OBJ'
+    })
+  },
+  computed: {
+    ...mapGetters('Basic', [
+      'vxQueryObj'
+    ])
   }
 }

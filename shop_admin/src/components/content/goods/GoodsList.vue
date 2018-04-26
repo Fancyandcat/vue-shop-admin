@@ -23,41 +23,32 @@
   </el-card>
 </template>
 <script>
-import { ApiGoodsCountPage, ApiGoodsList, ApiGoodsAutocomplete, ApiGoodsQuery } from 'api/goods'
+import { ApiGoodsList, ApiGoodsAutocomplete, ApiGoodsQuery } from 'api/goods'
 import { mapMutations } from 'vuex'
+import { initPage } from 'common/js/mixinCommon'
 import GoodsTable from './GoodsTable'
 export default {
+  mixins: [initPage],
   components: {
     GoodsTable
   },
   data () {
     return {
-      tableData: [],
       loading: true,
-      aGoodsData: [],
-      pageMsg: {
-        total: 1,
-        pageNum: 1,
-        pageSize: 10
-      },
       dialogVisible: false,
+      timeout: null,
+      tableData: [],
+      aGoodsData: [],
       searchObj: {
         keyword: ''
-      },
-      timeout: null
+      }
     }
   },
   created () {
     this.resetGoodsId()
-    this.getPage()
-    this.getList()
+    this.initPage()
   },
   methods: {
-    getPage () {
-      ApiGoodsCountPage().then(res => {
-        this.pageMsg.total = res.length
-      })
-    },
     getList () {
       this.loading = true
       ApiGoodsList(this.pageMsg).then(res => {
@@ -75,10 +66,6 @@ export default {
           console.error('goodslist', res)
         }
       })
-    },
-    handlePageChange (i) {
-      this.pageMsg.pageNum = i
-      this.getList()
     },
     resetGoodsId () {
       this.setGoodsId('')

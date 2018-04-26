@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.0.4",
     "element-ui": "^2.2.2",
     "leancloud-realtime": "^3.5.7",
     "leancloud-storage": "^3.6.1",

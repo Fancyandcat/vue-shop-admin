@@ -1,36 +1,67 @@
 <template>
-  <div>
-    <button @click="addData">click</button>
+  <div class="index-home">
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-card class="card-goods box-card">
+          <div slot="header">
+            <span>在线商品</span>
+          </div>
+          <div class="card-chart" id="goods-chart"></div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
+import { ApiGoodsCategory } from 'api/goods'
+import { OptionGoodsCard } from 'common/js/echartConfig'
+var echarts = require('echarts')
 export default {
   data () {
-    return {}
+    return {
+      categoryData: []
+    }
   },
   created () {
-    console.log(window.AV.User.current())
+    this.initCard()
   },
   methods: {
-    addData () {
-      // 测试一下能不能正常请求别的数据
-      window.AV.User.logOut()
-      // this.$get('https://ipqwsvhf.api.lncld.net/1.1/classes/TestObject?' + this.setGetParamsToStr(obj)).then((res) => {
-      //   console.log(res)
-      // })
+    initCard () {
+      this.setGoodsCard()
     },
-    setGetParamsToStr (obj) {
-      let str = ''
-      let paramsObj = JSON.parse(JSON.stringify(obj))
-      for (let k in paramsObj) {
-        if (typeof paramsObj[k] === 'object') {
-          str = str + k + '=' + JSON.stringify(paramsObj[k]) + '&'
-        } else {
-          str = str + k + '=' + paramsObj[k] + '&'
-        }
-      }
-      return str.substring(0, str.length - 1)
+    setGoodsCard () {
+      ApiGoodsCategory().then(res => {
+        let tempArr = []
+        res.forEach(cate => {
+          tempArr.push({
+            value: cate.children.length,
+            name: cate.title
+          })
+        })
+        this.categoryData = tempArr
+        this.$nextTick(() => {
+          try {
+            let option = OptionGoodsCard(this.categoryData.sort(function (a, b) { return a.value - b.value }))
+            this.drawGoodsCate(option)
+          } catch (err) {
+            console.log('echart', err)
+          }
+        })
+      })
+    },
+    drawGoodsCate (option) {
+      var myChart = echarts.init(document.getElementById('goods-chart'))
+      console.log('启动')
+      myChart.setOption(option)
     }
   }
 }
 </script>
+<style lang="stylus" scoped>
+.index-home
+  .box-card
+    margin 10px
+    .card-chart
+      width 100%
+      height 300px
+</style>

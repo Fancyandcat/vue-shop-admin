@@ -63,6 +63,7 @@ export default {
       window.Message.confirmDeleteMessage().then(() => {
         ApiGoodsDelete(id).then(res => {
           window.Message.successMessage('删除成功')
+          console.log('wcao')
           that.$emit('getList')
         }).catch(() => {
           window.Message.errorMessage('删除失败')

@@ -8,7 +8,7 @@
       </el-row>
     </div>
     <div class="content">
-      <goods-table :data="tableData" v-loading="loading" :getList="getList"></goods-table>
+      <goods-table :data="tableData" v-loading="loading" @getList="getList"></goods-table>
       <el-pagination :page-size="pageMsg.pageSize" :current-page="pageMsg.pageNum" :total="pageMsg.total" @current-change="handlePageChange" layout="total,prev,pager,next,jumper"></el-pagination>
     </div>
     <el-dialog
@@ -16,6 +16,7 @@
       :visible.sync="dialogVisible"
       width="70%">
       <span slot="footer" class="dialog-footer">
+        <goods-table :data="aGoodsData"></goods-table>
         <el-button type="primary" @click="handleCloseDialog">确 定</el-button>
       </span>
     </el-dialog>
@@ -59,7 +60,6 @@ export default {
     },
     getList () {
       this.loading = true
-      console.log('shuaxin')
       ApiGoodsList(this.pageMsg).then(res => {
         if (Array.isArray(res)) {
           this.tableData = res.map(item => {

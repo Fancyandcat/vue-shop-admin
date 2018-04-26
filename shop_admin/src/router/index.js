@@ -5,11 +5,11 @@ import Cloud from '@/components/view/Cloud'
 import Bus from '@/components/view/Bus'
 import Home from '@/components/content/index/Home'
 // goodsList
-import GoodsList from '@/components/content/goods/GoodsList'
-import GoodsEdit from '@/components/content/goods/GoodsEdit'
+const GoodsList = () => import('@/components/content/goods/GoodsList')
+const GoodsEdit = () => import('@/components/content/goods/GoodsEdit')
 // categoryList
-import CategoryList from '@/components/content/category/CategoryList'
-import CategoryEdit from '@/components/content/category/CategoryEdit'
+const CategoryList = () => import('@/components/content/category/CategoryList')
+const CategoryEdit = () => import('@/components/content/category/CategoryEdit')
 Vue.use(Router)
 
 let goods = [

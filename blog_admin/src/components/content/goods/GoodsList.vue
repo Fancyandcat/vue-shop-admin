@@ -3,7 +3,13 @@
     <div slot="header">
       <el-row :gutter="20">
         <el-col :span="2"><div>商品列表</div></el-col>
-        <el-col :span="2" :offset="20"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
+        <el-col :span="2"><el-input
+          placeholder="请输入内容"
+          v-model="input10"
+          @change="ceshi"
+          clearable>
+        </el-input></el-col>
+        <el-col :span="2" :offset="18"><div><el-button type="success" round size="medium" @click="goGoodsEdit">添加商品</el-button></div></el-col>
       </el-row>
     </div>
     <div class="content">
@@ -50,7 +56,8 @@ export default {
         total: 1,
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      input10: ''
     }
   },
   created () {
@@ -113,6 +120,11 @@ export default {
     },
     resetGoodsId () {
       this.setGoodsId('')
+    },
+    querySearchAsync (queryString, cb) {
+    },
+    ceshi (str) {
+      console.log(str)
     },
     ...mapMutations('Goods', {
       'setGoodsId': 'SET_GOODS_ID'
